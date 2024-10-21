@@ -1,6 +1,8 @@
 export class Language {
     constructor(name, type, extension, searchList, start, end, commentParser, braces, indent) {
         this.type = type;
+        this.name = name;
+        this.extension = extension;
         for (var i = 0; i < searchList.length; i++) {
             if (searchList[i].start && searchList[i].end) {
                 searchList[i].reg = `(${start})(${searchList[i].reg})(${end})`;
