@@ -1,0 +1,15 @@
+{
+    "name": "CSV",
+    "type": "text/csv",
+    "extension": "csv",
+    "list": [
+        {
+            "start": true,
+            "end": true,
+            "reg": ",",
+            "color": "yellow"
+        }
+    ],
+    "start": "",
+    "end": ""
+}

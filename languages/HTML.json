@@ -1,0 +1,538 @@
+{
+    "name": "HTML",
+    "type": "text/html",
+    "extension": "html",
+    "list": [
+        {
+            "start": true,
+            "end": true,
+            "reg": "html",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "head",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "meta",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "title",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "link",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "style",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "body",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "header",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "main",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "footer",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "script",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "img",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "nav",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "menu",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "form",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "textarea",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "select",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "option",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "input",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "button",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "h1",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "h2",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "h3",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "h4",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "h5",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "div",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "ol",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "ul",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "li",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "table",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "tr",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "td",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "p",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "br",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "hr",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "a",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "span",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "small",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "label",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "menu",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "dialog",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "section",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "progress",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "iframe",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "svg",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "text",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "g",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "rect",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "polygon",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "animate",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "animateTransform",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "!doctype",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "id",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "class",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "href",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "src",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "type",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "rel",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "name",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "alt",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "data-.+?",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "x",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "y",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "height",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "width",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "method",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "property",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "action",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "value",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "placeholder",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "required",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "pattern",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "autocomplete",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "min",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "max",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "onclick",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "contenteditable",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "content",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "lang",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "charset",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "media",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "viewbox",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "points",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "attributeName",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "attributeType",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "values",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "dur",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "repeatCount",
+            "color": "yellow"
+        }
+    ],
+    "start": "&lt;[^&]* |&lt;|&lt;/",
+    "end": "&gt;| [^&]*&gt;|=| ",
+    "commentOut": "&lt;!--[^]*?--&gt;"
+}

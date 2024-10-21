@@ -1,0 +1,164 @@
+{
+    "name": "JavaScript",
+    "type": "text/javascript",
+    "extension": "js",
+    "list": [
+        {
+            "start": true,
+            "end": true,
+            "reg": "function",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "for",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "if",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "else",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "var",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "const",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "let",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "class",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "new",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "return",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "this",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "window",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "document",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "localStorage",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "history",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "length",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "getElementById",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "getElementsByClassName",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "addEventListener",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "innerHTML",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "value",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "replace",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "replaceAll",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "setInterval",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "setTimeout",
+            "color": "green"
+        }
+    ],
+    "start": " |^|\\(|\\)|\\.|>|\n",
+    "end": " |^|\\(|\\)|\\.|<|;",
+    "commentOut": "//.*\n",
+    "braces": [
+        ["{","}"],
+        ["[","]"]
+    ]
+}

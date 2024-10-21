@@ -1,0 +1,372 @@
+{
+    "name": "CSS",
+    "type": "text/css",
+    "extension": "css",
+    "list": [
+        {
+            "start": true,
+            "end": true,
+            "reg": "padding(?:|-top|-left|-right|-bottom)",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "margin(?:|-top|-left|-right|-bottom)",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "(?:|column-|row-)gap",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "(?:|min-|max-)(?:width|height)",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "display",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "position",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "top",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "left",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "right",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "bottom",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "background(?:|-color|-image|-size)",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "color",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "opacity",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "border(?:|-top|-left|-right|-bottom|-radius)",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "font-family",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "font(?:|-size|-weight)",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "text(?:-align|-decoration|-overflow)",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "flex(?:|-wrap|-direction|-flow)",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "grid(?:-template(?:|-columns|-rows))",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "overflow(?:|-x|-y|-wrap)",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "z-index",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "white-space",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "box(?:-sizing|-shadow)",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "object-fit",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "justify-content",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "align-items",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "list-style",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "animation",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "content",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "(?:|-webkit-|-moz-|-o-|-ms-)backdrop-filter",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "none",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "auto",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "center",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "hidden",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "block",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "inline-block",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "flex",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "grid",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "inline",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "static",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "fixed",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "absolute",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "relative",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "sticky",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "scroll",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "border-box",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "calc",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "min",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "max",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "solid",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "column",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "row",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "blur",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "url",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "attr",
+            "color": "green"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "[0-9-.]*em",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "[0-9-.]*pt",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "[0-9-.]*px",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "[0-9-.]*%",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "[0-9-.]*(?:|d|l|s)v(?:w|h)",
+            "color": "blue"
+        }
+    ],
+    "start": " |:|;|\n|\\(|\\)|,|^",
+    "end": " |:|;|\n|\\(|\\)|,",
+    "braces": [
+        ["{","}"]
+    ]
+}

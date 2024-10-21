@@ -1,0 +1,21 @@
+{
+    "name": "JSON",
+    "type": "application/json",
+    "extension": "json",
+    "list": [
+        {
+            "start": true,
+            "end": true,
+            "reg": "true",
+            "color": "blue"
+        },
+        {
+            "start": true,
+            "end": true,
+            "reg": "false",
+            "color": "blue"
+        }
+    ],
+    "start": "\"",
+    "end": "\""
+}

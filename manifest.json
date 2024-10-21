@@ -1,0 +1,40 @@
+{
+    "name": "HYBCode",
+    "short_name": "HYBCode",
+    "description": "御影速部のオリジナルコードエディタ。速部がiPadからプログラムを組む際に無料でダウンロードできるコードエディタでは物足りず自作。もしこのアプリを見つけられた場合は使用しても構わないが、バグ等があっても保証しない。また、一部、自分の書き方に合わせて処理を簡略化している影響で動作が不安定である。注意、自動保存のデータは消えることがあるため定期的に保存することをお勧めする。",
+    "display": "standalone",
+    "categories": ["education", "productivity", "utilities"],
+    "start_url": "./",
+    "theme_color": "#222",
+    "background_color": "#222",
+    "share_target": {
+        "action": "/shared-content-receiver/",
+        "method": "POST",
+        "enctype": "multipart/form-data",
+        "params": {
+            "title": "name",
+            "text": "description",
+            "url": "link",
+            "files": [
+                {
+                    "name": "file",
+                    "accept": "*"
+                }
+            ]
+        }
+    },
+    "icons": [
+        {
+            "src": "logo.svg",
+            "type": "image/svg+xml",
+            "sizes": "48x48 72x72 96x96 128x128 192x192 256x256",
+            "purpose": "any"
+        },
+        {
+            "src": "logo.png",
+            "type": "image/png",
+            "sizes": "48x48 72x72 96x96 128x128 192x192 256x256",
+            "purpose": "any"
+        }
+    ]
+}
