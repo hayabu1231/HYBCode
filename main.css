@@ -31,7 +31,7 @@ body{
     width: 100dvw;
 }
 .menu_content{
-    padding: 5px;
+    padding: 6px;
     position: sticky;
     vertical-align: center;
 }
@@ -40,7 +40,7 @@ body{
 }
 .menu_list{
     position: absolute;
-    top: 30px;
+    top: 32px;
     left: 0px;
     white-space: nowrap;
     display: none;
