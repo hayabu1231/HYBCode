@@ -120,11 +120,12 @@ function createFileBlock(type, id, name, date, data, service) {
         icon.src = 'img/files.svg';
     } else if (type == 'repo') {
         block.addEventListener('click', function() {
-            System.settings.connections.get(this.dataset.type).getAll(this.dataset.id);
+            System.settings.connections.get(this.dataset.type).getAll(null, this.dataset.id);
         });
         icon.src = 'img/repo.svg';
     } else if (type == 'folder') {
         block.addEventListener('click', function() {
+            System.settings.connections.get(this.dataset.type).getAll(this.dataset.id);
         });
         icon.src = 'img/folder.svg';
     } else {
