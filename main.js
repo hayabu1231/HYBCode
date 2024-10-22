@@ -101,6 +101,64 @@ xhr.open('GET', `languages/${UsableFileType[LanguageLoadCount]}.json`, true);
 xhr.send();
 
 //ファイルサービス関連
+function createFileBlock(type, id, name, date, data) {
+    let block = document.createElement('div');
+    let isFile = false;
+    block.className = 'files-file';
+    block.dataset.id = id;
+    block.dataset.type = name;
+    var icon = document.createElement('img');
+    if (type == 'host') {
+        block.addEventListener('click', function() {
+            selectFilesService(this.dataset.id);
+        });
+        icon.src = 'img/host.svg';
+    } else if (type == 'files') {
+        block.addEventListener('click', function() {
+            document.getElementById('import').click();
+        });
+        icon.src = 'img/files.svg';
+    } else if (type == 'repo') {
+        block.addEventListener('click', function() {
+            System.settings.connections.get(this.dataset.type).getAll(this.dataset.id);
+        });
+        icon.src = 'img/repo.svg';
+    } else if (type == 'folder') {
+        block.addEventListener('click', function() {
+        });
+        icon.src = 'img/folder.svg';
+    } else {
+        block.addEventListener('click', function() {
+            let file = System.settings.connections.get(this.dataset.type).files[Number(this.dataset.id)];
+            File.open(file);
+            FileInfo.id = file.id;
+            FileInfo.service = this.dataset.type;
+            screenClose('Files');
+        });
+        icon.src = 'img/file.svg';
+        if (UsableLanguages.has(type)) {
+            name = `${name}.${UsableLanguages.get(type).extension}`;
+        } else {
+            name = `${name}.txt`;
+        }
+        isFile = true;
+    }
+    block.append(icon);
+    var info = document.createElement('div');
+    var name_item = document.createElement('p');
+    name_item.innerText = name;
+    info.append(name_item);
+    if (isFile) {
+        var file_date = document.createElement('small');
+        file_date.innerText = date;
+        info.append(file_date);
+        var file_size = document.createElement('small');
+        file_size.innerText = calcDataSize(data);
+        info.append(file_size);
+    }
+    block.append(info);
+    return block;
+}
 function connectionsGetAll() {
     var dbConnection = System.settings.db.transaction('connections', 'readwrite');
     var connectionsDB = dbConnection.objectStore('connections');
@@ -130,22 +188,11 @@ function showFilesServices(id) {
     let services = [];
     let connections = [];
     System.settings.connections.forEach(function(service) {
-        var service_element = document.createElement('div');
-        service_element.className = 'files-file';
+        var service_element = createFileBlock('host', service.id, service.name);
         if (id && id == service.id) {
             service_element.dataset.selected = 'true';
             service.getAll();
         }
-        service_element.dataset.type = service.id;
-        service_element.addEventListener('click', function() {
-            selectFilesService(this.dataset.type);
-        });
-        var service_icon = document.createElement('img');
-        service_icon.src = 'img/host.svg';
-        service_element.append(service_icon);
-        var service_name = document.createElement('p');
-        service_name.innerText = service.name;
-        service_element.append(service_name);
         services.push(service_element);
         var service_element = document.createElement('div');
         service_element.className = 'btn btn-open_screen';
@@ -164,18 +211,7 @@ function showFilesServices(id) {
         service_element.append(service_name);
         connections.push(service_element);
     });
-    let service_element = document.createElement('div');
-    service_element.className = 'files-file';
-    service_element.addEventListener('click', function() {
-        document.getElementById('import').click();
-    });
-    var service_icon = document.createElement('img');
-    service_icon.src = 'img/files.svg';
-    service_element.append(service_icon);
-    var service_name = document.createElement('p');
-    service_name.innerText = 'Files';
-    service_element.append(service_name);
-    services.push(service_element);
+    services.push(createFileBlock('files', null, 'Files'));
     document.getElementById('screen-Files-services').replaceChildren(...services);
     document.getElementById('screen-Connections-list').replaceChildren(...connections);
 }
@@ -185,48 +221,7 @@ function selectFilesService(name) {
     if (System.settings.connections.has(name)) {
         var files = System.settings.connections.get(name).files;
         for (var i = 0; i < files.length; i++) {
-            var file = document.createElement('div');
-            file.className = 'files-file';
-            file.dataset.id = i;
-            file.dataset.type = name;
-            var file_icon = document.createElement('img');
-            if (files[i].type == 'repo') {
-                file.addEventListener('click', function() {
-                    System.settings.connections.get(this.dataset.type).getAll(this.dataset.id);
-                });
-                file_icon.src = 'img/repo.svg';
-            } else if (files[i].type == 'folder') {
-                file.addEventListener('click', function() {
-                });
-                file_icon.src = 'img/folder.svg';
-            } else {
-                file.addEventListener('click', function() {
-                    let file = System.settings.connections.get(this.dataset.type).files[Number(this.dataset.id)];
-                    File.open(file);
-                    FileInfo.id = file.id;
-                    FileInfo.service = this.dataset.type;
-                    screenClose('Files');
-                });
-                file_icon.src = 'img/file.svg';
-            }
-            file.append(file_icon);
-            if (UsableLanguages.has(files[i].type)) {
-                var fileExtension = UsableLanguages.get(files[i].type).extension;
-            } else {
-                var fileExtension = 'txt';
-            }
-            var file_info = document.createElement('div');
-            var file_name = document.createElement('p');
-            file_name.innerText = `${files[i].name}.${fileExtension}`;
-            file_info.append(file_name);
-            var file_date = document.createElement('small');
-            file_date.innerText = files[i].date;
-            file_info.append(file_date);
-            var file_size = document.createElement('small');
-            file_size.innerText = calcDataSize(files[i].data);
-            file_info.append(file_size);
-            file.append(file_info);
-            fileElements.push(file);
+            fileElements.push(createFileBlock(files[i].type, i, files[i].name, files[i].date, files[i].data));
         }
         if (fileElements.length == 0) {
             var file = document.createElement('div');
