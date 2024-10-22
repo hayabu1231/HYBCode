@@ -124,7 +124,7 @@ export class FileServiceGitHub {
                     }
                     thisClass.files.push({
                         type: data.type,
-                        id: `${repo.id}/${data.path}`,
+                        id: `${repo.id}/contents/${data.path}`,
                         name: data.name
                     });
                 }
@@ -144,18 +144,11 @@ export class FileServiceGitHub {
         this._get(url, null, returnFunction);
     }
     save(data, returnFunction) {
-        var dbConnection = this._db.transaction('files', 'readwrite');
-        var filesDB = dbConnection.objectStore('files');
-        if (data.id) {
-            var request = filesDB.put(data);
-        } else {
-            var request = filesDB.add(data);
-        }
         var thisClass = this;
-        request.onsuccess = function(event) {
+        this._send(`/repos/${data.id}`, data, function(data) {
             thisClass.getAll();
-            returnFunction(event.target.result);
-        };
+            returnFunction(data);
+        });
     }
 }
 export class FileServiceHYBFTS {
