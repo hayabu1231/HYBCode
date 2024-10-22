@@ -34,6 +34,7 @@ class Connection {
 export class FileServiceLocal {
     constructor(db) {
         this.id = 'local';
+        this.name = 'local';
         this.type = 'local';
         this.files = [];
         this._db = db;
@@ -65,7 +66,9 @@ export class FileServiceLocal {
 }
 export class FileServiceGitHub {
     constructor(token) {
-        this.id = '';
+        this.id = token;
+        this._username = '';
+        this.name = 'loading@github';
         this.type = 'github';
         this.files = [];
         this._token = token;
@@ -74,7 +77,8 @@ export class FileServiceGitHub {
     _login() {
         var thisClass = this;
         this._get('user', null, function(status, data) {
-            thisClass.id = data.login;
+            thisClass.name = data.login + '@github';
+            thisClass._username = data.login;
             thisClass.getAll();
         });
     }
@@ -128,7 +132,7 @@ export class FileServiceGitHub {
                 }
             };
         } else {
-            url = `users/${this.id}/repos`;
+            url = `users/${this._username}/repos`;
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
                     thisClass.files.push({
@@ -152,6 +156,7 @@ export class FileServiceGitHub {
 export class FileServiceHYBFTS {
     constructor(address, id, password) {
         this.id = `${address}@${id}@hybfts`;
+        this.name = `${address}@${id}@hybfts`;
         this.type = 'hybfts';
         this.files = [];
         this.xhr = new XMLHttpRequest();
