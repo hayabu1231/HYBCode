@@ -113,6 +113,7 @@ export class FileServiceGitHub {
     getAll(repo, path) {
         let returnFunction = function() {};
         let url = '';
+        let data = null;
         var thisClass = this;
         if (repo) {
             url = `/repos/${repo.id}/contents`;
@@ -142,8 +143,9 @@ export class FileServiceGitHub {
                     });
                 }
             };
+            data = 'type=all';
         }
-        this._get(url, null, returnFunction);
+        this._get(url, data, returnFunction);
     }
     save(data, returnFunction) {
         var thisClass = this;
