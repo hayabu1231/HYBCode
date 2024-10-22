@@ -123,6 +123,7 @@ body{
     background: var(--main-background);
     color: var(--main-color);
     padding: 5px;
+    overflow: scroll;
 }
 .btn-screen_close {
     border: none;
