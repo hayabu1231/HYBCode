@@ -116,9 +116,9 @@ export class FileServiceGitHub {
         let data = null;
         var thisClass = this;
         if (repo) {
-            url = `/repos/${repo}/contents`;
+            url = `repos/${repo}/contents`;
             if (path) {
-                url = `/repos/${repo}/contents/${path}`;
+                url = `repos/${repo}/contents/${path}`;
             }
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
@@ -133,7 +133,7 @@ export class FileServiceGitHub {
                 }
             };
         } else if (path) {
-            url = `/repos/${path}`;
+            url = `repos/${path}`;
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].type == 'dir') {
