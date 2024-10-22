@@ -101,12 +101,12 @@ xhr.open('GET', `languages/${UsableFileType[LanguageLoadCount]}.json`, true);
 xhr.send();
 
 //ファイルサービス関連
-function createFileBlock(type, id, name, date, data) {
+function createFileBlock(type, id, name, date, data, service) {
     let block = document.createElement('div');
     let isFile = false;
     block.className = 'files-file';
     block.dataset.id = id;
-    block.dataset.type = name;
+    block.dataset.type = service;
     var icon = document.createElement('img');
     if (type == 'host') {
         block.addEventListener('click', function() {
@@ -221,7 +221,7 @@ function selectFilesService(name) {
     if (System.settings.connections.has(name)) {
         var files = System.settings.connections.get(name).files;
         for (var i = 0; i < files.length; i++) {
-            fileElements.push(createFileBlock(files[i].type, i, files[i].name, files[i].date, files[i].data));
+            fileElements.push(createFileBlock(files[i].type, i, files[i].name, files[i].date, files[i].data, name));
         }
         if (fileElements.length == 0) {
             var file = document.createElement('div');
