@@ -73,7 +73,7 @@ export class FileServiceGitHub {
     }
     _login() {
         var thisClass = this;
-        this._get('user/', null, function(data) {
+        this._get('user', null, function(data) {
             if (data.type == 'User') {
                 thisClass.id = data.login;
                 thisClass.getAll();
@@ -86,7 +86,8 @@ export class FileServiceGitHub {
             url: `https://api.github.com/${url}`,
             headers: [
                 {id: 'accept', value: 'application/vnd.github+json'},
-                {id: 'authorization', value: 'token ' + this._token}
+                {id: 'authorization', value: 'token ' + this._token},
+                {id: 'X-GitHub-Api-Version', value: '2022-11-28'}
             ]
         };
         if (data) {
@@ -94,18 +95,25 @@ export class FileServiceGitHub {
         }
         new Connection(request, returnFunction);
     }
-    _send(url, data) {
-        this.xhr.open('POST', `https://api.github.com/${url}`, true);
-        this.xhr.setRequestHeader('accept', 'application/vnd.github+json');
-        this.xhr.setRequestHeader('authorization', 'token ' + this._token);
-        this.xhr.send(data);
+    _send(url, data, returnFunction) {
+        let request = {
+            method: 'POST',
+            url: `https://api.github.com/${url}`,
+            headers: [
+                {id: 'accept', value: 'application/vnd.github+json'},
+                {id: 'authorization', value: 'token ' + this._token},
+                {id: 'X-GitHub-Api-Version', value: '2022-11-28'}
+            ],
+            data: data
+        };
+        new Connection(request, returnFunction);
     }
     getAll(repo, path) {
         let returnFunction = function() {};
         let url = '';
         var thisClass = this;
         if (repo) {
-            url = `/repos/${repo.id}/contents/`;
+            url = `/repos/${repo.id}/contents`;
             if (path) {
                 url = `/repos/${repo.id}/contents/${path}`;
             }
@@ -116,7 +124,7 @@ export class FileServiceGitHub {
                     }
                     thisClass.files.push({
                         type: data.type,
-                        id: `${repo.id}/${data.path}`,
+                        id: `${repo.id}/contents/${data.path}`,
                         name: data.name
                     });
                 }
@@ -136,18 +144,11 @@ export class FileServiceGitHub {
         this._get(url, null, returnFunction);
     }
     save(data, returnFunction) {
-        var dbConnection = this._db.transaction('files', 'readwrite');
-        var filesDB = dbConnection.objectStore('files');
-        if (data.id) {
-            var request = filesDB.put(data);
-        } else {
-            var request = filesDB.add(data);
-        }
         var thisClass = this;
-        request.onsuccess = function(event) {
+        this._send(`/repos/${data.id}`, data, function(data) {
             thisClass.getAll();
-            returnFunction(event.target.result);
-        };
+            returnFunction(data);
+        });
     }
 }
 export class FileServiceHYBFTS {
