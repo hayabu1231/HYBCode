@@ -144,7 +144,7 @@ function showFilesServices(id) {
         service_icon.src = 'img/host.svg';
         service_element.append(service_icon);
         var service_name = document.createElement('p');
-        service_name.innerText = service.id;
+        service_name.innerText = service.name;
         service_element.append(service_name);
         services.push(service_element);
         var service_element = document.createElement('div');
@@ -160,7 +160,7 @@ function showFilesServices(id) {
         service_icon.src = 'img/host.svg';
         service_element.append(service_icon);
         var service_name = document.createElement('p');
-        service_name.innerText = service.id;
+        service_name.innerText = service.name;
         service_element.append(service_name);
         connections.push(service_element);
     });
