@@ -129,7 +129,12 @@ function createFileBlock(type, id, name, date, data, service) {
         icon.src = 'img/folder.svg';
     } else {
         block.addEventListener('click', function() {
-            let file = System.settings.connections.get(this.dataset.type).files[Number(this.dataset.id)];
+            let files = System.settings.connections.get(this.dataset.type).files;
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].id == this.dataset.id) {
+                    var file = files[i];
+                }
+            }
             File.open(file);
             FileInfo.id = file.id;
             FileInfo.service = this.dataset.type;
@@ -221,7 +226,7 @@ function selectFilesService(name) {
     if (System.settings.connections.has(name)) {
         var files = System.settings.connections.get(name).files;
         for (var i = 0; i < files.length; i++) {
-            fileElements.push(createFileBlock(files[i].type, i, files[i].name, files[i].date, files[i].data, name));
+            fileElements.push(createFileBlock(files[i].type, files[i].id, files[i].name, files[i].date, files[i].data, name));
         }
         if (fileElements.length == 0) {
             var file = document.createElement('div');
