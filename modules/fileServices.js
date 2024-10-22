@@ -116,10 +116,24 @@ export class FileServiceGitHub {
         let data = null;
         var thisClass = this;
         if (repo) {
-            url = `/repos/${repo.id}/contents`;
+            url = `/repos/${repo}/contents`;
             if (path) {
-                url = `/repos/${repo.id}/contents/${path}`;
+                url = `/repos/${repo}/contents/${path}`;
             }
+            returnFunction = function(status, data) {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].type == 'dir') {
+                        data[i].type = 'folder';
+                    }
+                    thisClass.files.push({
+                        type: data[i].type,
+                        id: `${repo.id}/contents/${data[i].path}`,
+                        name: data[i].name
+                    });
+                }
+            };
+        } else if (path) {
+            url = `/repos/${path}`;
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].type == 'dir') {
