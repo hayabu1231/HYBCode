@@ -1,3 +1,36 @@
+class Connection {
+    constructor(data, returnFunction) {
+        this.xhr = new XMLHttpRequest();
+        var thisClass = this;
+        this.xhr.addEventListener('load', function() {
+            thisClass._receive(thisClass, returnFunction);
+        });
+        this.xhr.addEventListener('error', (event) => {
+            throw new Error('通信中にエラーが発生しました');
+        });
+        this._send(data.method, data.url, data.data, data.headers);
+    }
+    _send(method, url, data, headers) {
+        this.xhr.open(method, url, true);
+        if (headers) {
+            for (var i = 0; i < headers.length; i++) {
+                this.xhr.setRequestHeader(headers[i].id, headers[i].value);
+            }
+        }
+        this.xhr.send(data);
+    }
+    _receive(thisClass, returnFunction) {
+        if (thisClass.xhr.readyState === 4 && thisClass.xhr.status == 200) {
+            var data = JSON.parse(thisClass.xhr.responseText);
+            returnFunction(thisClass.xhr.status, data);
+        } else if (thisClass.xhr.readyState === 4 && thisClass.xhr.status == 403) {
+            throw new Error('認証情報が無効です');
+        } else if (thisClass.xhr.readyState === 4) {
+            throw new Error('失敗した可能性があります' + thisClass.xhr.status);
+        }
+    }
+}
+
 export class FileServiceLocal {
     constructor(db) {
         this.id = 'local';
@@ -14,6 +47,93 @@ export class FileServiceLocal {
         request.onsuccess = function(event) {
             thisClass.files = event.target.result;
         };
+    }
+    save(data, returnFunction) {
+        var dbConnection = this._db.transaction('files', 'readwrite');
+        var filesDB = dbConnection.objectStore('files');
+        if (data.id) {
+            var request = filesDB.put(data);
+        } else {
+            var request = filesDB.add(data);
+        }
+        var thisClass = this;
+        request.onsuccess = function(event) {
+            thisClass.getAll();
+            returnFunction(event.target.result);
+        };
+    }
+}
+export class FileServiceGitHub {
+    constructor(token) {
+        this.id = '';
+        this.type = 'github';
+        this.files = [];
+        this._token = token;
+        this._login();
+    }
+    _login() {
+        var thisClass = this;
+        this._get('user/', null, function(data) {
+            if (data.type == 'User') {
+                thisClass.id = data.login;
+                thisClass.getAll();
+            }
+        });
+    }
+    _get(url, data, returnFunction) {
+        let request = {
+            method: 'GET',
+            url: `https://api.github.com/${url}`,
+            headers: [
+                {id: 'accept', value: 'application/vnd.github+json'},
+                {id: 'authorization', value: 'token ' + this._token}
+            ]
+        };
+        if (data) {
+            request.url = `https://api.github.com/${url}?${data}`;
+        }
+        new Connection(request, returnFunction);
+    }
+    _send(url, data) {
+        this.xhr.open('POST', `https://api.github.com/${url}`, true);
+        this.xhr.setRequestHeader('accept', 'application/vnd.github+json');
+        this.xhr.setRequestHeader('authorization', 'token ' + this._token);
+        this.xhr.send(data);
+    }
+    getAll(repo, path) {
+        let returnFunction = function() {};
+        let url = '';
+        var thisClass = this;
+        if (repo) {
+            url = `/repos/${repo.id}/contents/`;
+            if (path) {
+                url = `/repos/${repo.id}/contents/${path}`;
+            }
+            returnFunction = function(data) {
+                for (let i = 0; i < data.length; i++) {
+                    if (data.type == 'dir') {
+                        data.type = 'folder';
+                    }
+                    thisClass.files.push({
+                        type: data.type,
+                        id: `${repo.id}/${data.path}`,
+                        name: data.name
+                    });
+                }
+            };
+        } else {
+            url = `users/${this.id}/repos`;
+            returnFunction = function(data) {
+                for (let i = 0; i < data.length; i++) {
+                    thisClass.files.push({
+                        type: 'repo',
+                        id: data.full_name,
+                        name: data.name
+                    });
+                }
+            };
+        }
+        this._get(url, null, returnFunction);
     }
     save(data, returnFunction) {
         var dbConnection = this._db.transaction('files', 'readwrite');
@@ -52,7 +172,7 @@ export class FileServiceHYBFTS {
         this.xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
         this.xhr.send(`id=${id}&password=${password}`);
     }
-    _getData(url,data) {
+    _get(url,data) {
         this.xhr.open('GET', `https://${this._address}/${url}?location=${this._selectedPath}&data=${encodeURI(JSON.stringify(data))}`, true);
         this.xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
         this.xhr.setRequestHeader('authorization', 'HYB-key ' + this._session);
@@ -102,11 +222,11 @@ export class FileServiceHYBFTS {
         }
     }
     getAll() {
-        this._getData('file-list/');
+        this._get('file-list/');
     }
     save(data, returnFunction) {
         /*
-        this._sendData();
+        this._send();
         returnFunction(id);
         */
     }

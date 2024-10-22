@@ -119,16 +119,32 @@
 <dialog id="screen-NewConnections" class="screen" data-type="NewConnections">
     <button class="btn-screen_close" data-name="NewConnections">×</button>
     <h1 class="center">接続サービス</h1>
-    <p>*がついているサービスは準備中</p>
+    <p>
+        *がついているサービスは準備中です。<br>
+        不具合があることがあるので、基本的に使用しないでください。
+    </p>
     <div class="screen-body">
         <p class="btn" data-name="NewConnectionsGDrive">Google Drive*</p>
-        <p class="btn" data-name="NewConnectionsGitHub">GitHub*</p>
-        <p class="btn btn-open_screen" data-name="NewConnectionsHyb">HYB FTS</p>
+        <p class="btn btn-open_screen" data-name="NewConnectionsGitHub">GitHub*</p>
+        <p class="btn btn-open_screen" data-name="NewConnectionsHyb">HYB FTS*</p>
+    </div>
+</dialog>
+<dialog id="screen-NewConnectionsGitHub" class="screen" data-type="NewConnectionsGitHub">
+    <button class="btn-screen_close" data-name="NewConnectionsGitHub">×</button>
+    <h1 class="center">GitHubに接続</h1>
+    <p>試験実装中</p>
+    <div class="screen-body">
+        <label class="screen-body-item">
+            アクセストークン
+            <input id="screen-Connections-github-token" class="screen-body-item-select" placeholder="github...">
+        </label>
+        <button id="screen-Connections-github-send" class="btn">接続</button>
     </div>
 </dialog>
 <dialog id="screen-NewConnectionsHyb" class="screen" data-type="NewConnectionsHyb">
     <button class="btn-screen_close" data-name="NewConnectionsHyb">×</button>
     <h1 class="center">HYB FTSに接続</h1>
+    <p>試験実装中</p>
     <div class="screen-body">
         <label class="screen-body-item">
             アドレス

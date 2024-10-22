@@ -23,7 +23,7 @@ navigator.serviceWorker.register("service-worker.js").then((registration) => {
 
 //必須クラス
 import { Language } from './modules/language.js';
-import { FileServiceLocal, FileServiceHYBFTS } from './modules/fileServices.js';
+import { FileServiceLocal, FileServiceGitHub, FileServiceHYBFTS } from './modules/fileServices.js';
 
 //固定
 const UsableFonts = Object.freeze(['sans-serif', 'serif', 'fantasy', 'system-ui']);
@@ -115,6 +115,8 @@ function addFilesServices(type, data) {
     let service = null;
     if (type == 'local') {
         service = new FileServiceLocal(System.settings.db);
+    } else if (type == 'github') {
+        service = new FileServiceGitHub(data.token);
     } else if (type == 'hybfts') {
         service = new FileServiceHYBFTS(data.address, data.user.id, data.user.password);
     } else {
@@ -593,6 +595,11 @@ const OnclickData = [
     ['btn-saveEditingFile', File.save],
     ['btn-fileExport', File.download],
     ['btn-manualIndent', manualIndent],
+    ['screen-Connections-github-send', function() {
+        addFilesServices('github', {token: document.getElementById('screen-Connections-github-token').value});
+        screenClose('NewConnectionsGitHub');
+        screenClose('NewConnections');
+    }],
     ['screen-Connections-FTS-send', function() {
         addFilesServices('hybfts', {address: `${document.getElementById('screen-Connections-FTS-address').value}:${document.getElementById('screen-Connections-FTS-port').value}`, user: {id: document.getElementById('screen-Connections-FTS-user').value, password: document.getElementById('screen-Connections-FTS-password').value}});
         screenClose('NewConnectionsHyb');
