@@ -122,39 +122,63 @@ export class FileServiceGitHub {
             }
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
-                    if (data[i].type == 'dir') {
-                        data[i].type = 'folder';
+                    var hasData = false;
+                    for (let j = 0; j < thisClass.files.length; j++) {
+                        if (thisClass.files[j].id == data[i].full_name) {
+                            hasData = true;
+                        }
                     }
-                    thisClass.files.push({
-                        type: data[i].type,
-                        id: `${repo.id}/contents/${data[i].path}`,
-                        name: `${repo.id}/contents/${data[i].path}`
-                    });
+                    if (!hasData) {
+                        if (data[i].type == 'dir') {
+                            data[i].type = 'folder';
+                        }
+                        thisClass.files.push({
+                            type: data[i].type,
+                            id: `${repo.id}/contents/${data[i].path}`,
+                            name: `${repo.id}/contents/${data[i].path}`
+                        });
+                    }
                 }
             };
         } else if (path) {
             url = `repos/${path}`;
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
-                    if (data[i].type == 'dir') {
-                        data[i].type = 'folder';
+                    var hasData = false;
+                    for (let j = 0; j < thisClass.files.length; j++) {
+                        if (thisClass.files[j].id == data[i].full_name) {
+                            hasData = true;
+                        }
                     }
-                    thisClass.files.push({
-                        type: data[i].type,
-                        id: `${path}/${data[i].name}`,
-                        name: `${path}/${data[i].name}`
-                    });
+                    if (!hasData) {
+                        if (data[i].type == 'dir') {
+                            data[i].type = 'folder';
+                        }
+                        thisClass.files.push({
+                            type: data[i].type,
+                            id: `${path}/${data[i].name}`,
+                            name: `${path}/${data[i].name}`
+                        });
+                    }
                 }
             };
         } else {
             url = `users/${this._username}/repos`;
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
-                    thisClass.files.push({
-                        type: 'repo',
-                        id: data[i].full_name,
-                        name: data[i].name
-                    });
+                    var hasData = false;
+                    for (let j = 0; j < thisClass.files.length; j++) {
+                        if (thisClass.files[j].id == data[i].full_name) {
+                            hasData = true;
+                        }
+                    }
+                    if (!hasData) {
+                        thisClass.files.push({
+                            type: 'repo',
+                            id: data[i].full_name,
+                            name: data[i].name
+                        });
+                    }
                 }
             };
             data = 'type=all';
