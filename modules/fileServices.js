@@ -110,7 +110,7 @@ export class FileServiceGitHub {
         };
         new Connection(request, returnFunction);
     }
-    getAll(repo, path) {
+    getAll(path, repo) {
         let returnFunction = function() {};
         let url = '';
         let data = null;
@@ -134,8 +134,8 @@ export class FileServiceGitHub {
                         }
                         thisClass.files.push({
                             type: data[i].type,
-                            id: `${repo.id}/contents/${data[i].path}`,
-                            name: `${repo.id}/contents/${data[i].path}`
+                            id: `${repo}/contents/${data[i].path}`,
+                            name: `${repo}/contents/${data[i].path}`
                         });
                     }
                 }
