@@ -73,8 +73,7 @@ export class FileServiceGitHub {
     }
     _login() {
         var thisClass = this;
-        this._get('user', null, function(data) {
-            console.log(data);
+        this._get('user', null, function(status, data) {
             thisClass.id = data.login;
             thisClass.getAll();
         });
@@ -116,7 +115,7 @@ export class FileServiceGitHub {
             if (path) {
                 url = `/repos/${repo.id}/contents/${path}`;
             }
-            returnFunction = function(data) {
+            returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
                     if (data.type == 'dir') {
                         data.type = 'folder';
@@ -130,7 +129,7 @@ export class FileServiceGitHub {
             };
         } else {
             url = `users/${this.id}/repos`;
-            returnFunction = function(data) {
+            returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
                     thisClass.files.push({
                         type: 'repo',
@@ -144,7 +143,7 @@ export class FileServiceGitHub {
     }
     save(data, returnFunction) {
         var thisClass = this;
-        this._send(`/repos/${data.id}`, data, function(data) {
+        this._send(`/repos/${data.id}`, data, function(status, data) {
             thisClass.getAll();
             returnFunction(data);
         });
