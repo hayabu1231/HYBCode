@@ -74,6 +74,7 @@ export class FileServiceGitHub {
     _login() {
         var thisClass = this;
         this._get('user', null, function(data) {
+            console.log(data);
             thisClass.id = data.login;
             thisClass.getAll();
         });
