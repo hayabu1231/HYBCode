@@ -190,12 +190,12 @@ function selectFilesService(name) {
             file.dataset.id = i;
             file.dataset.type = name;
             var file_icon = document.createElement('img');
-            if (files.type == 'repo') {
+            if (files[i].type == 'repo') {
                 file.addEventListener('click', function() {
                     System.settings.connections.get(this.dataset.type).getAll(this.dataset.id);
                 });
                 file_icon.src = 'img/repo.svg';
-            } else if (files.type == 'folder') {
+            } else if (files[i].type == 'folder') {
                 file.addEventListener('click', function() {
                 });
                 file_icon.src = 'img/folder.svg';
