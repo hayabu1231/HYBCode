@@ -121,13 +121,13 @@ export class FileServiceGitHub {
             }
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
-                    if (data.type == 'dir') {
-                        data.type = 'folder';
+                    if (data[i].type == 'dir') {
+                        data[i].type = 'folder';
                     }
                     thisClass.files.push({
-                        type: data.type,
-                        id: `${repo.id}/contents/${data.path}`,
-                        name: data.name
+                        type: data[i].type,
+                        id: `${repo.id}/contents/${data[i].path}`,
+                        name: data[i].name
                     });
                 }
             };
@@ -137,8 +137,8 @@ export class FileServiceGitHub {
                 for (let i = 0; i < data.length; i++) {
                     thisClass.files.push({
                         type: 'repo',
-                        id: data.full_name,
-                        name: data.name
+                        id: data[i].full_name,
+                        name: data[i].name
                     });
                 }
             };
