@@ -128,7 +128,7 @@ export class FileServiceGitHub {
                     thisClass.files.push({
                         type: data[i].type,
                         id: `${repo.id}/contents/${data[i].path}`,
-                        name: data[i].name
+                        name: `${repo.id}/contents/${data[i].path}`
                     });
                 }
             };
@@ -141,8 +141,8 @@ export class FileServiceGitHub {
                     }
                     thisClass.files.push({
                         type: data[i].type,
-                        id: `${repo.id}/contents/${data[i].path}`,
-                        name: data[i].name
+                        id: `${path}/${data[i].name}`,
+                        name: `${path}/${data[i].name}`
                     });
                 }
             };
