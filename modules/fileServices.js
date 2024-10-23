@@ -132,10 +132,14 @@ export class FileServiceGitHub {
                         if (data[i].type == 'dir') {
                             data[i].type = 'folder';
                         }
+                        if (data[i].content) {
+                            data[i].content = window.atob(data[i].content);
+                        }
                         thisClass.files.push({
                             type: data[i].type,
                             id: `${repo}/contents/${data[i].path}`,
-                            name: `${repo}/contents/${data[i].path}`
+                            name: `${repo}/contents/${data[i].path}`,
+                            data: data[i].content
                         });
                     }
                 }
