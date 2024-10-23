@@ -124,7 +124,7 @@ export class FileServiceGitHub {
                 for (let i = 0; i < data.length; i++) {
                     var hasData = false;
                     for (let j = 0; j < thisClass.files.length; j++) {
-                        if (thisClass.files[j].id == data[i].full_name) {
+                        if (thisClass.files[j].id == `${repo}/contents/${data[i].path}`) {
                             hasData = true;
                         }
                     }
@@ -146,7 +146,7 @@ export class FileServiceGitHub {
                 for (let i = 0; i < data.length; i++) {
                     var hasData = false;
                     for (let j = 0; j < thisClass.files.length; j++) {
-                        if (thisClass.files[j].id == data[i].full_name) {
+                        if (thisClass.files[j].id == `${path}/${data[i].name}`) {
                             hasData = true;
                         }
                     }
@@ -154,10 +154,14 @@ export class FileServiceGitHub {
                         if (data[i].type == 'dir') {
                             data[i].type = 'folder';
                         }
+                        if (data[i].content) {
+                            data[i].content = window.atob(data[i].content);
+                        }
                         thisClass.files.push({
                             type: data[i].type,
                             id: `${path}/${data[i].name}`,
-                            name: `${path}/${data[i].name}`
+                            name: `${path}/${data[i].name}`,
+                            data: data[i].content
                         });
                     }
                 }
