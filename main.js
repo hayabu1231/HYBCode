@@ -142,11 +142,6 @@ function createFileBlock(type, id, name, date, data, service) {
             screenClose('Files');
         });
         icon.src = 'img/file.svg';
-        if (UsableLanguages.has(type)) {
-            name = `${name}.${UsableLanguages.get(type).extension}`;
-        } else {
-            name = `${name}.txt`;
-        }
         isFile = true;
     }
     block.append(icon);
@@ -312,14 +307,9 @@ const File = {
             if (EditingFiles.has(`${EditingFile.id}@${EditingFile.type}@${EditingFile.service}@${EditingFile.name}`)) {
                 file.dataset.selected = 'true';
             }
-            if (UsableLanguages.has(EditingFile.type)) {
-                var fileExtension = UsableLanguages.get(EditingFile.type).extension;
-            } else {
-                var fileExtension = 'txt';
-            }
             var file_name = document.createElement('p');
             file_name.className = 'menu_files-file-name';
-            file_name.innerText = `${EditingFile.name}.${fileExtension}`;
+            file_name.innerText = EditingFile.name;
             file_name.dataset.id = `${EditingFile.id}@${EditingFile.type}@${EditingFile.service}@${EditingFile.name}`;
             file_name.addEventListener('click', function() {
                 File.open(EditingFiles.get(`${EditingFile.id}@${EditingFile.type}@${EditingFile.service}@${EditingFile.name}`));
@@ -356,18 +346,13 @@ const File = {
         }
      },
     download: function() {
-        if (UsableLanguages.has(FileInfo.type)) {
-            var fileExtension = UsableLanguages.get(FileInfo.type).extension;
-        } else {
-            var fileExtension = 'txt';
-        }
         var blob = new Blob([document.getElementById('input').innerText],{type:FileInfo.type});
         document.getElementById('screen-Export-icon').dataset.type = FileInfo.type;
         document.getElementById('screen-Export-icon').dataset.data = document.getElementById('input').innerText;
         document.getElementById('screen-Export-preview').src = URL.createObjectURL(blob);
-        document.getElementById('screen-Export-name').innerText = `${FileInfo.name}.${fileExtension}`;
+        document.getElementById('screen-Export-name').innerText = FileInfo.name;
         document.getElementById('screen-Export-download').src = URL.createObjectURL(blob);
-        document.getElementById('screen-Export-download').setAttribute('download', `${FileInfo.name}.${fileExtension}`);
+        document.getElementById('screen-Export-download').setAttribute('download', FileInfo.name);
         screenOpen('Export');
     },
     upload: function() {
