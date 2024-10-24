@@ -230,11 +230,13 @@ export class FileServiceGitHub {
         this._get(url, data, returnFunction);
     }
     save(data, returnFunction) {
+        /*
         var thisClass = this;
         this._send(`/repos/${data.id}`, data, function(status, data) {
             thisClass.getAll();
             returnFunction(data);
         });
+        */
     }
 }
 export class FileServiceHYBFTS {
