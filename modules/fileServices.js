@@ -112,24 +112,26 @@ export class FileServiceGitHub {
     }
     getData(path) {
         if (path) {
-            url = `repos/${path}`;
+            var url = `repos/${path}`;
             returnFunction = function(status, data) {
-                var hasData = false;
+                var hasData = -1;
                 for (let j = 0; j < thisClass.files.length; j++) {
                     if (thisClass.files[j].id == `${path}/${data.name}`) {
-                        hasData = true;
+                        hasData = j;
                     }
                 }
-                if (!hasData) {
-                    if (data.content) {
-                        data.content = window.atob(data.content);
-                    }
+                if (data.content) {
+                    data.content = window.atob(data.content);
+                }
+                if (hasData == -1) {
                     thisClass.files.push({
                         type: null,
                         id: `${path}/${data.name}`,
                         name: `${path}/${data.name}`,
                         data: data.content
                     });
+                } else {
+                    thisClass.files[hasData].data = data.content;
                 }
             };
             this._get(url, null, returnFunction);
