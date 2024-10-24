@@ -117,7 +117,7 @@ export class FileServiceGitHub {
             var returnFunction = function(status, data) {
                 var hasData = -1;
                 for (let j = 0; j < thisClass.files.length; j++) {
-                    if (thisClass.files[j].id == `${path}/${data.name}`) {
+                    if (thisClass.files[j].id == path) {
                         hasData = j;
                     }
                 }
@@ -127,8 +127,8 @@ export class FileServiceGitHub {
                 if (hasData == -1) {
                     thisClass.files.push({
                         type: null,
-                        id: `${path}/${data.name}`,
-                        name: `${path}/${data.name}`,
+                        id: path,
+                        name: path,
                         data: data.content
                     });
                 } else {
