@@ -162,7 +162,7 @@ export class FileServiceGitHub {
                         } else {
                             data[i].type = null;
                             if (data[i].content) {
-                                data[i].content = window.atob(data[i].content);
+                                data[i].content = new TextDecoder().decode(Uint8Array.from(window.atob(data[i].content), (m) => m.codePointAt(0)));
                             } else {
                                 thisClass.getData(`${repo}/contents/${data[i].path}`);
                             }
@@ -192,7 +192,7 @@ export class FileServiceGitHub {
                         } else {
                             data[i].type = null;
                             if (data[i].content) {
-                                data[i].content = window.atob(data[i].content);
+                                data[i].content = new TextDecoder().decode(Uint8Array.from(window.atob(data[i].content), (m) => m.codePointAt(0)));
                             } else {
                                 this.getData(`${path}/${data[i].path}`);
                             }
