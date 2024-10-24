@@ -294,6 +294,14 @@ const File = {
         FileInfo.id = data.id;
         FileInfo.name = data.name;
         FileInfo.type = data.type;
+        if (!FileInfo.type) {
+            FileInfo.type = 'text/example';
+            UsableLanguages.forEach(function(language) {
+                if (language.extension == data.name.split('.').at(-1)){
+                    FileInfo.type = language.type;
+                }
+            });
+        }
         FileInfo.service = data.service;
         document.getElementById('input').innerText = data.data;
         change();
@@ -360,12 +368,6 @@ const File = {
         for (let i = 0; i < files.length; i++) {
             let file = files[i];
             FileInfo.id = null;
-            FileInfo.type = 'text/example';
-            UsableLanguages.forEach(function(language) {
-                if (language.extension == file.name.split('.').at(-1)){
-                    FileInfo.type = language.type;
-                }
-            });
             var reader = new FileReader();
             reader.onload = ()=> {
                 File.open({
