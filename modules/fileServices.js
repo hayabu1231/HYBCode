@@ -112,6 +112,7 @@ export class FileServiceGitHub {
     }
     getData(path) {
         if (path) {
+            var thisClass = this;
             var url = `repos/${path}`;
             var returnFunction = function(status, data) {
                 var hasData = -1;
