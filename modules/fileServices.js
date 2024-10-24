@@ -122,7 +122,7 @@ export class FileServiceGitHub {
                     }
                 }
                 if (data.content) {
-                    data.content = window.atob(data.content);
+                    data.content = new TextDecoder().decode(Uint8Array.from(window.atob(data.content), (m) => m.codePointAt(0)));
                 }
                 if (hasData == -1) {
                     thisClass.files.push({
