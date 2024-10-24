@@ -110,6 +110,31 @@ export class FileServiceGitHub {
         };
         new Connection(request, returnFunction);
     }
+    getData(path) {
+        if (path) {
+            url = `repos/${path}`;
+            returnFunction = function(status, data) {
+                var hasData = false;
+                for (let j = 0; j < thisClass.files.length; j++) {
+                    if (thisClass.files[j].id == `${path}/${data.name}`) {
+                        hasData = true;
+                    }
+                }
+                if (!hasData) {
+                    if (data.content) {
+                        data.content = window.atob(data.content);
+                    }
+                    thisClass.files.push({
+                        type: null,
+                        id: `${path}/${data.name}`,
+                        name: `${path}/${data.name}`,
+                        data: data.content
+                    });
+                }
+            };
+            this._get(url, null, returnFunction);
+        }
+    }
     getAll(path, repo) {
         let returnFunction = function() {};
         let url = '';
@@ -131,9 +156,13 @@ export class FileServiceGitHub {
                     if (!hasData) {
                         if (data[i].type == 'dir') {
                             data[i].type = 'folder';
-                        }
-                        if (data[i].content) {
-                            data[i].content = window.atob(data[i].content);
+                        } else {
+                            data[i].type = null;
+                            if (data[i].content) {
+                                data[i].content = window.atob(data[i].content);
+                            } else {
+                                thisClass.getData(`${repo}/contents/${data[i].path}`);
+                            }
                         }
                         thisClass.files.push({
                             type: data[i].type,
@@ -157,9 +186,13 @@ export class FileServiceGitHub {
                     if (!hasData) {
                         if (data[i].type == 'dir') {
                             data[i].type = 'folder';
-                        }
-                        if (data[i].content) {
-                            data[i].content = window.atob(data[i].content);
+                        } else {
+                            data[i].type = null;
+                            if (data[i].content) {
+                                data[i].content = window.atob(data[i].content);
+                            } else {
+                                this.getData(`${path}/${data[i].path}`);
+                            }
                         }
                         thisClass.files.push({
                             type: data[i].type,
