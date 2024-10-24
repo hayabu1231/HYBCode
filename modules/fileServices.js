@@ -246,7 +246,9 @@ export class FileServiceGitHub {
         /*
         var thisClass = this;
         this._put(`/repos/${data.id}`, {
-            content: data.data
+            message: '',
+            content: window.btoa(data.data),
+            sha: ''
         }, function(status, data) {
             thisClass.getAll();
             returnFunction(data);
