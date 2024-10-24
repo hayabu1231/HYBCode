@@ -113,7 +113,7 @@ export class FileServiceGitHub {
     getData(path) {
         if (path) {
             var url = `repos/${path}`;
-            returnFunction = function(status, data) {
+            var returnFunction = function(status, data) {
                 var hasData = -1;
                 for (let j = 0; j < thisClass.files.length; j++) {
                     if (thisClass.files[j].id == `${path}/${data.name}`) {
