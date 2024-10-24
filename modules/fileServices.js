@@ -110,6 +110,19 @@ export class FileServiceGitHub {
         };
         new Connection(request, returnFunction);
     }
+    _put(url, data, returnFunction) {
+        let request = {
+            method: 'PUT',
+            url: `https://api.github.com/${url}`,
+            headers: [
+                {id: 'accept', value: 'application/vnd.github+json'},
+                {id: 'authorization', value: 'token ' + this._token},
+                {id: 'X-GitHub-Api-Version', value: '2022-11-28'}
+            ],
+            data: data
+        };
+        new Connection(request, returnFunction);
+    }
     getData(path) {
         if (path) {
             var thisClass = this;
@@ -232,7 +245,9 @@ export class FileServiceGitHub {
     save(data, returnFunction) {
         /*
         var thisClass = this;
-        this._send(`/repos/${data.id}`, data, function(status, data) {
+        this._put(`/repos/${data.id}`, {
+            content: data.data
+        }, function(status, data) {
             thisClass.getAll();
             returnFunction(data);
         });
@@ -277,7 +292,7 @@ export class FileServiceHYBFTS {
     }
     _receive(thisClass) {
         if (thisClass.xhr.readyState === 4 && thisClass.xhr.status == 200) {
-            var data = JSON.parse(this.xhr.responseText);
+            var data = JSON.parse(thisClass.xhr.responseText);
             if (data.type == 'login') {
                 thisClass._session = data.session;
                 thisClass.getAll();
