@@ -524,6 +524,11 @@ function screenOpen(type){
         document.getElementById('screen-Settings-color').value = System.settings.color;
         document.getElementById('screen-Settings-autoSave').dataset.check = System.settings.autoSave;
         document.getElementById('screen-Settings-deleteSave').innerHTML = `保存済みデータ削除(${storageSize()})`;
+        navigator.storage.estimate().then(function (estimate) {
+            let percent = (estimate.usage / estimate.quota) * 100;
+            document.getElementById('screen-Settings-storage').innerText = `${calcDataSize(estimate.usage)}/${calcDataSize(estimate.quota)}(${percent}%)`;
+            document.getElementById('screen-Settings-storage').style.background = `linear-gradient(to right, #0fa ${percent}%, #888 ${percent}%)`;
+        });
     } else if(type == 'Connections'){
         showFilesServices();
     }
