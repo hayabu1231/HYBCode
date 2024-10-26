@@ -207,7 +207,7 @@ export class FileServiceGitHub {
                             if (data[i].content) {
                                 data[i].content = new TextDecoder().decode(Uint8Array.from(window.atob(data[i].content), (m) => m.codePointAt(0)));
                             } else {
-                                this.getData(`${path}/${data[i].path}`);
+                                thisClass.getData(`${path}/${data[i].path}`);
                             }
                         }
                         thisClass.files.push({
