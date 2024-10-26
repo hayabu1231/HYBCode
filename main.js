@@ -132,6 +132,7 @@ function createFileBlock(type, id, name, date, data, service) {
     } else if (type == 'folder') {
         block.addEventListener('click', function() {
             System.settings.connections.get(this.dataset.type).getAll(this.dataset.id);
+            selectFilesService(this.dataset.type, this.dataset.id);
         });
         icon.src = 'img/folder.svg';
     } else {
@@ -244,7 +245,7 @@ function selectFilesService(name, path) {
                     fileNum = j;
                 }
             }
-            folders[fileNum].push(createFileBlock(files[i].type, files[i].id, files[i].name, files[i].date, files[i].data, name));
+            folders[fileNum].push(createFileBlock(files[i].type, files[i].id, path.slice(fileNum).join('/'), files[i].date, files[i].data, name));
         }
         for (var i = 0; i < folders.length; i++) {
             if (folders[i].length == 0) {
