@@ -126,7 +126,7 @@ function createFileBlock(type, id, name, date, data, service) {
     } else if (type == 'repo') {
         block.addEventListener('click', function() {
             System.settings.connections.get(this.dataset.type).getAll(null, this.dataset.id);
-            selectFilesService(this.dataset.type, this.dataset.id + '/contents');
+            selectFilesService(this.dataset.type, this.dataset.id + '/contents/');
         });
         icon.src = 'img/repo.svg';
     } else if (type == 'folder') {
@@ -247,9 +247,9 @@ function selectFilesService(name, path) {
             for (var j = 0; j < FilePicker.path.length; j++) {
                 if (path[j] == FilePicker.path[j]) {
                     if (files[i].type == 'folders' || files[i].type == 'repo') {
-                        fileNum = j;
+                        fileNum = j - 1;
                     } else {
-                        fileNum = j + 1;
+                        fileNum = j;
                     }
                 } else if (j < (path.length - 1)) {
                     fileNum = -1;
