@@ -372,7 +372,7 @@ const File = {
             reader.onload = ()=> {
                 File.open({
                     type: FileInfo.type,
-                    name: file.name.split('.').slice(0,-1).join(''),
+                    name: file.name,
                     data: reader.result
                 });
             };
