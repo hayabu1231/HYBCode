@@ -249,6 +249,7 @@ function selectFilesService(name, path) {
                     }
                 } else if (j < (path.length - 1)) {
                     fileNum = -1;
+                    break;
                 }
             }
             if (fileNum != -1) {
