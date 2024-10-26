@@ -235,7 +235,6 @@ function selectFilesService(name, path) {
         folders.push([]);
     }
     if (System.settings.connections.has(name)) {
-        let hasFile = false;
         var files = System.settings.connections.get(name).files;
         for (var i = 0; i < files.length; i++) {
             let path = files[i].name.split('/');
@@ -248,11 +247,13 @@ function selectFilesService(name, path) {
             folders[fileNum].push(createFileBlock(files[i].type, files[i].id, files[i].name, files[i].date, files[i].data, name));
             hasFile = true;
         }
-        if (!hasFile) {
-            var file = document.createElement('div');
-            file.className = 'files-file';
-            file.innerText = 'ファイルがありません';
-            folders[0].push(file);
+        for (var i = 0; i < folders.length; i++) {
+            if (folders[i].length == 0) {
+                var file = document.createElement('div');
+                file.className = 'files-file';
+                file.innerText = 'ファイルがありません';
+                folders[i].push(file);
+            }
         }
     } else {
         var file = document.createElement('div');
@@ -266,7 +267,7 @@ function selectFilesService(name, path) {
         folder.replaceChildren(...folders[i]);
         folders[i] = folder;
     }
-    document.getElementById('screen-Files-folders').replaceChildren(folders);
+    document.getElementById('screen-Files-folders').replaceChildren(...folders);
 }
 
 //ファイル管理用DB（OPFSが使えるようになったら更新しようね）
