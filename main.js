@@ -243,9 +243,11 @@ function selectFilesService(name, path) {
             for (var j = 0; j < FilePicker.path.length; j++) {
                 if (path[j] == FilePicker.path[j]) {
                     fileNum = j;
+                } else if (j < (path.length - 1)) {
+                    fileNum = -1;
                 }
             }
-            if ((fileNum + 1) == path.length) {
+            if (fileNum != -1) {
                 folders[fileNum].push(createFileBlock(files[i].type, files[i].id, path.slice(fileNum).join('/'), files[i].date, files[i].data, name));
             }
         }
