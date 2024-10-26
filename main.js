@@ -242,7 +242,11 @@ function selectFilesService(name, path) {
             let fileNum = 0;
             for (var j = 0; j < FilePicker.path.length; j++) {
                 if (path[j] == FilePicker.path[j]) {
-                    fileNum = j;
+                    if (files[i].type == 'folders' || files[i].type == 'repo') {
+                        fileNum = j;
+                    } else {
+                        fileNum = j + 1;
+                    }
                 } else if (j < (path.length - 1)) {
                     fileNum = -1;
                 }
