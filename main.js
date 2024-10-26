@@ -247,20 +247,20 @@ function selectFilesService(name, path) {
             }
             let fileNum = 0;
             path = path.split('/');
-            for (var j = 0; j < FilePicker.path.length; j++) {
-                if (path[j] == FilePicker.path[j]) {
-                    if (files[i].type == 'folders' || files[i].type == 'repo') {
-                        if (!path.slice(j).join('/') || path.slice(j).join('/') == '') {
-                            fileNum = j - 1;
-                        } else {
+            if (FilePicker.path.join('/').startsWith(path.join('/')) && FilePicker.path.length > 0) {
+                fileNum = path.length - 1;
+            } else {
+                for (var j = 0; j < FilePicker.path.length; j++) {
+                    if (path[j] == FilePicker.path[j]) {
+                        if (files[i].type == 'folders' || files[i].type == 'repo') {
                             fileNum = j;
+                        } else {
+                            fileNum = j + 1;
                         }
-                    } else {
-                        fileNum = j + 1;
+                    } else if (j < (path.length - 1)) {
+                        fileNum = -1;
+                        break;
                     }
-                } else if (j < (path.length - 1)) {
-                    fileNum = -1;
-                    break;
                 }
             }
             if (fileNum > -1) {
