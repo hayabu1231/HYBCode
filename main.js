@@ -245,7 +245,6 @@ function selectFilesService(name, path) {
                 }
             }
             folders[fileNum].push(createFileBlock(files[i].type, files[i].id, files[i].name, files[i].date, files[i].data, name));
-            hasFile = true;
         }
         for (var i = 0; i < folders.length; i++) {
             if (folders[i].length == 0) {
