@@ -238,7 +238,11 @@ function selectFilesService(name, path) {
     if (System.settings.connections.has(name)) {
         var files = System.settings.connections.get(name).files;
         for (var i = 0; i < files.length; i++) {
-            let path = files[i].name.split('/');
+            let path = files[i].name;
+            if (path.endsWith('/')) {
+                path = path.slice(0, -1);
+            }
+            path = path.split('/');
             let fileNum = 0;
             for (var j = 0; j < FilePicker.path.length; j++) {
                 if (path[j] == FilePicker.path[j]) {
