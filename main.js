@@ -227,6 +227,9 @@ function selectFilesService(name, path) {
     showFilesServices(name);
     FilePicker.service = name;
     if (path) {
+        if (path.endsWith('/')) {
+            path = path.slice(0, -1);
+        }
         FilePicker.path = path.split('/');
     } else {
         FilePicker.path = [];
@@ -247,9 +250,9 @@ function selectFilesService(name, path) {
             for (var j = 0; j < FilePicker.path.length; j++) {
                 if (path[j] == FilePicker.path[j]) {
                     if (files[i].type == 'folders' || files[i].type == 'repo') {
-                        fileNum = j - 1;
-                    } else {
                         fileNum = j;
+                    } else {
+                        fileNum = j + 1;
                     }
                 } else if (j < (path.length - 1)) {
                     fileNum = -1;
