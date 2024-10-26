@@ -250,7 +250,7 @@ function selectFilesService(name, path) {
             if (FilePicker.path.join('/').startsWith(path.join('/')) && FilePicker.path.length > 0) {
                 fileNum = path.length - 1;
             } else {
-                for (var j = 0; j < FilePicker.path.length; j++) {
+                for (var j = 0; j < path.length; j++) {
                     if (path[j] == FilePicker.path[j]) {
                         if (files[i].type == 'folders' || files[i].type == 'repo') {
                             fileNum = j;
