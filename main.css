@@ -81,6 +81,7 @@ body{
 
 .files-folders {
     display: flex;
+    overflow: scroll;
 }
 .files-folder {
     border-right: solid 1px #888;
@@ -114,12 +115,15 @@ body{
     bottom: 0;
     width: 100vw;
     width: 100dvw;
+    max-height: 50vh;
+    max-height: 50dvh;
     z-index: 4;
     border: none;
     border-top: solid 1px #888;
     background: var(--main-background);
     color: var(--main-color);
     padding: 5px;
+    overflow: scroll;
 }
 .btn-screen_close {
     border: none;
@@ -184,6 +188,12 @@ body{
     border: none;
     border-radius: 5px;
 }
+.storage-size {
+    text-align: right;
+    padding: 5px;
+    border-radius: 5px;
+}
+
 #editor_wrap {
     position: relative;
     flex: 1;
