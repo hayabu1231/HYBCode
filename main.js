@@ -245,11 +245,11 @@ function selectFilesService(name, path) {
             if (path.endsWith('/')) {
                 path = path.slice(0, -1);
             }
+            let fileNum = 0;
             if (path == FilePicker.path.join('/')) {
                 fileNum = path.length - 2;
             } else {
                 path = path.split('/');
-                let fileNum = 0;
                 for (var j = 0; j < FilePicker.path.length; j++) {
                     if (path[j] == FilePicker.path[j]) {
                         if (files[i].type == 'folders' || files[i].type == 'repo') {
