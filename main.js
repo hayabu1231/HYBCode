@@ -126,7 +126,7 @@ function createFileBlock(type, id, name, date, data, service) {
     } else if (type == 'repo') {
         block.addEventListener('click', function() {
             System.settings.connections.get(this.dataset.type).getAll(null, this.dataset.id);
-            selectFilesService(this.dataset.type, this.dataset.id);
+            selectFilesService(this.dataset.type, this.dataset.id + '/contents');
         });
         icon.src = 'img/repo.svg';
     } else if (type == 'folder') {
