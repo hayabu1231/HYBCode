@@ -247,8 +247,8 @@ function selectFilesService(name, path) {
             }
             let fileNum = 0;
             path = path.split('/');
-            if (path.join('/') == FilePicker.path.join('/') && FilePicker.path.length > 1) {
-                fileNum = FilePicker.path.length - 2;
+            if (path.join('/') == FilePicker.path.join('/') && FilePicker.path.length > 0) {
+                fileNum = FilePicker.path.length - 1;
             } else {
                 for (var j = 0; j < FilePicker.path.length; j++) {
                     if (path[j] == FilePicker.path[j]) {
