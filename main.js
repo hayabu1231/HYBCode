@@ -100,6 +100,11 @@ xhr.addEventListener('load', function(data) {
 xhr.open('GET', `languages/${UsableFileType[LanguageLoadCount]}.json`, true);
 xhr.send();
 
+const FilePicker = {
+    service: null,
+    path: []
+};
+
 //ファイルサービス関連
 function createFileBlock(type, id, name, date, data, service) {
     let block = document.createElement('div');
@@ -121,6 +126,7 @@ function createFileBlock(type, id, name, date, data, service) {
     } else if (type == 'repo') {
         block.addEventListener('click', function() {
             System.settings.connections.get(this.dataset.type).getAll(null, this.dataset.id);
+            selectFilesService(this.dataset.type, this.dataset.id);
         });
         icon.src = 'img/repo.svg';
     } else if (type == 'folder') {
@@ -216,29 +222,50 @@ function showFilesServices(id) {
     document.getElementById('screen-Files-services').replaceChildren(...services);
     document.getElementById('screen-Connections-list').replaceChildren(...connections);
 }
-function selectFilesService(name) {
+function selectFilesService(name, path) {
     showFilesServices(name);
-    var fileElements = [];
+    FilePicker.service = name;
+    if (path) {
+        FilePicker.path = path.split('/');
+    } else {
+        FilePicker.path = [];
+    }
+    var folders = [[]];
+    for (var i = 0; i < FilePicker.path.length; i++) {
+        folders.push([]);
+    }
     if (System.settings.connections.has(name)) {
+        let hasFile = false;
         var files = System.settings.connections.get(name).files;
         for (var i = 0; i < files.length; i++) {
-            fileElements.push(createFileBlock(files[i].type, files[i].id, files[i].name, files[i].date, files[i].data, name));
+            let path = files[i].name.split('/');
+            let fileNum = 0;
+            for (var j = 0; j < FilePicker.path.length; j++) {
+                if (path[j] == FilePicker.path[j] {
+                    fileNum = j;
+                }
+            }
+            folders[fileNum].push(createFileBlock(files[i].type, files[i].id, files[i].name, files[i].date, files[i].data, name));
+            hasFile = true;
         }
-        if (fileElements.length == 0) {
+        if (hasFile) {
             var file = document.createElement('div');
             file.className = 'files-file';
             file.innerText = 'ファイルがありません';
-            fileElements.push(file);
+            folders[0].push(file);
         }
     } else {
         var file = document.createElement('div');
         file.className = 'files-file';
         file.innerText = 'このサービスは未対応です';
-        fileElements.push(file);
+        folders[0].push(file);
     }
-    var folder = document.createElement('div');
-    folder.className = 'files-folder';
-    folder.replaceChildren(...fileElements);
+    for (var i = 0; i < folders.length; i++) {
+        var folder = document.createElement('div');
+        folder.className = 'files-folder';
+        folder.replaceChildren(...folders[i]);
+        folders[i] = folder;
+    }
     document.getElementById('screen-Files-folders').replaceChildren(folder);
 }
 
