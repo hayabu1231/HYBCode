@@ -246,10 +246,10 @@ function selectFilesService(name, path) {
                 path = path.slice(0, -1);
             }
             let fileNum = 0;
-            if (path == FilePicker.path.join('/')) {
+            path = path.split('/');
+            if (path.join('/') == FilePicker.path.join('/')) {
                 fileNum = FilePicker.path.length - 2;
             } else {
-                path = path.split('/');
                 for (var j = 0; j < FilePicker.path.length; j++) {
                     if (path[j] == FilePicker.path[j]) {
                         if (files[i].type == 'folders' || files[i].type == 'repo') {
@@ -263,7 +263,7 @@ function selectFilesService(name, path) {
                     }
                 }
             }
-            if (fileNum != -1) {
+            if (fileNum < 0) {
                 folders[fileNum].push(createFileBlock(files[i].type, files[i].id, path.slice(fileNum).join('/'), files[i].date, files[i].data, name));
             }
         }
