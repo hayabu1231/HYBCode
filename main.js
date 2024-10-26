@@ -246,7 +246,7 @@ function selectFilesService(name, path) {
                 }
             }
             if ((fileNum + 1) == path.length) {
-                folders[fileNum].push(createFileBlock(files[i].type, files[i].id, path.slice(fileNum + 1).join('/'), files[i].date, files[i].data, name));
+                folders[fileNum].push(createFileBlock(files[i].type, files[i].id, path.slice(fileNum).join('/'), files[i].date, files[i].data, name));
             }
         }
         for (var i = 0; i < folders.length; i++) {
