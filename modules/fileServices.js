@@ -220,7 +220,7 @@ export class FileServiceGitHub {
                 }
             };
         } else {
-            url = `users/${this._username}/repos`;
+            url = `user/repos`;
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
                     var hasData = false;
