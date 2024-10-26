@@ -242,10 +242,12 @@ function selectFilesService(name, path) {
             let fileNum = 0;
             for (var j = 0; j < FilePicker.path.length; j++) {
                 if (path[j] == FilePicker.path[j]) {
-                    fileNum = j + 1;
+                    fileNum = j;
                 }
             }
-            folders[fileNum].push(createFileBlock(files[i].type, files[i].id, path.slice(fileNum).join('/'), files[i].date, files[i].data, name));
+            if ((fileNum + 1) == path.length) {
+                folders[fileNum].push(createFileBlock(files[i].type, files[i].id, path.slice(fileNum + 1).join('/'), files[i].date, files[i].data, name));
+            }
         }
         for (var i = 0; i < folders.length; i++) {
             if (folders[i].length == 0) {
