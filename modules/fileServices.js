@@ -233,7 +233,7 @@ export class FileServiceGitHub {
                         thisClass.files.push({
                             type: 'repo',
                             id: data[i].full_name,
-                            name: data[i].name
+                            name: `${data[i].name}@${data[i].owner.login}`
                         });
                     }
                 }
