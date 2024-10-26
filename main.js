@@ -245,18 +245,22 @@ function selectFilesService(name, path) {
             if (path.endsWith('/')) {
                 path = path.slice(0, -1);
             }
-            path = path.split('/');
-            let fileNum = 0;
-            for (var j = 0; j < FilePicker.path.length; j++) {
-                if (path[j] == FilePicker.path[j]) {
-                    if (files[i].type == 'folders' || files[i].type == 'repo') {
-                        fileNum = j;
-                    } else {
-                        fileNum = j + 1;
+            if (path == FilePicker.path.join('/')) {
+                fileNum = path.length - 2;
+            } else {
+                path = path.split('/');
+                let fileNum = 0;
+                for (var j = 0; j < FilePicker.path.length; j++) {
+                    if (path[j] == FilePicker.path[j]) {
+                        if (files[i].type == 'folders' || files[i].type == 'repo') {
+                            fileNum = j;
+                        } else {
+                            fileNum = j + 1;
+                        }
+                    } else if (j < (path.length - 1)) {
+                        fileNum = -1;
+                        break;
                     }
-                } else if (j < (path.length - 1)) {
-                    fileNum = -1;
-                    break;
                 }
             }
             if (fileNum != -1) {
