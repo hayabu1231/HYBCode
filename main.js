@@ -381,8 +381,10 @@ const File = {
     }
 };
 
-function calcDataSize(data) {
-    var size = encodeURIComponent(data).replace(/%../g,"x").length;
+function calcDataSize(data, size) {
+    if (!size) {
+        var size = encodeURIComponent(data).replace(/%../g,"x").length;
+    }
     if (size > 1000000000) {
         size = `${Math.floor(((size / 1000) / 1000) / 100) / 10}GB`;
     } else if (size > 1000000) {
@@ -526,7 +528,7 @@ function screenOpen(type){
         document.getElementById('screen-Settings-deleteSave').innerHTML = `保存済みデータ削除(${storageSize()})`;
         navigator.storage.estimate().then(function (estimate) {
             let percent = (estimate.usage / estimate.quota) * 100;
-            document.getElementById('screen-Settings-storage').innerText = `${calcDataSize(estimate.usage)}/${calcDataSize(estimate.quota)}(${percent}%)`;
+            document.getElementById('screen-Settings-storage').innerText = `${calcDataSize(null, estimate.usage)}/${calcDataSize(null, estimate.quota)}(${percent}%)`;
             document.getElementById('screen-Settings-storage').style.background = `linear-gradient(to right, #0fa ${percent}%, #888 ${percent}%)`;
         });
     } else if(type == 'Connections'){
