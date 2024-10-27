@@ -349,15 +349,83 @@ export class FileServiceHYBFTS {
             throw new Error('失敗した可能性があります' + thisClass.xhr.status);
         }
     }
+    getData(path) {
+        if (path) {
+            var thisClass = this;
+            var url = `file-data/`;
+            var returnFunction = function(status, data) {
+                var hasData = -1;
+                for (let j = 0; j < thisClass.files.length; j++) {
+                    if (thisClass.files[j].id == path) {
+                        hasData = j;
+                    }
+                }
+                if (data.content) {
+                    data.content = new TextDecoder().decode(Uint8Array.from(window.atob(data.content), (m) => m.codePointAt(0)));
+                }
+                if (hasData == -1) {
+                    thisClass.files.push({
+                        type: null,
+                        id: path,
+                        name: path,
+                        data: data.content
+                    });
+                } else {
+                    thisClass.files[hasData].data = data.content;
+                }
+            };
+            this._get(url, `location=${path}`, returnFunction);
+        }
+    }
     getAll(path) {
         var thisClass = this;
         if (path) {
             this._get('file-list/', `location=${path}`, function(status, data) {
-                thisClass.files = data.files;
+                for (let i = 0; i < data.files.length; i++) {
+                    var hasData = false;
+                    for (let j = 0; j < thisClass.files.length; j++) {
+                        if (thisClass.files[j].id == `${path}/${data[i].name}`) {
+                            hasData = true;
+                        }
+                    }
+                    if (!hasData) {
+                        if (data[i].content) {
+                            data[i].content = new TextDecoder().decode(Uint8Array.from(window.atob(data[i].content), (m) => m.codePointAt(0)));
+                        } else if (!data[i].type || data[i].type != 'folder') {
+                            thisClass.getData(`${path}/${data[i].name}`);
+                        }
+                        thisClass.files.push({
+                            type: data[i].type,
+                            id: `${path}/${data[i].name}`,
+                            name: `${path}/${data[i].name}`,
+                            data: data[i].content
+                        });
+                    }
+                }
             });
         } else {
             this._get('file-list/', `location=`, function(status, data) {
-                thisClass.files = data.files;
+                for (let i = 0; i < data.files.length; i++) {
+                    var hasData = false;
+                    for (let j = 0; j < thisClass.files.length; j++) {
+                        if (thisClass.files[j].id == `${path}/${data[i].name}`) {
+                            hasData = true;
+                        }
+                    }
+                    if (!hasData) {
+                        if (data[i].content) {
+                            data[i].content = new TextDecoder().decode(Uint8Array.from(window.atob(data[i].content), (m) => m.codePointAt(0)));
+                        } else if (!data[i].type || data[i].type != 'folder') {
+                            thisClass.getData(data[i].name);
+                        }
+                        thisClass.files.push({
+                            type: data[i].type,
+                            id: data[i].name,
+                            name: data[i].name,
+                            data: data[i].content
+                        });
+                    }
+                }
             });
         }
     }
