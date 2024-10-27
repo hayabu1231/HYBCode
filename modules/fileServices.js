@@ -106,7 +106,7 @@ export class FileServiceGitHub {
                 {id: 'authorization', value: 'token ' + this._token},
                 {id: 'X-GitHub-Api-Version', value: '2022-11-28'}
             ],
-            data: data
+            data: JSON.stringify(data)
         };
         new Connection(request, returnFunction);
     }
@@ -119,7 +119,7 @@ export class FileServiceGitHub {
                 {id: 'authorization', value: 'token ' + this._token},
                 {id: 'X-GitHub-Api-Version', value: '2022-11-28'}
             ],
-            data: data
+            data: JSON.stringify(data)
         };
         new Connection(request, returnFunction);
     }
