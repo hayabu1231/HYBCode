@@ -113,28 +113,25 @@ function createFileBlock(type, id, name, date, data, service) {
     block.dataset.id = id;
     block.dataset.type = service;
     var icon = document.createElement('img');
+    icon.src = `img/${type}.svg`;
     if (type == 'host') {
         block.addEventListener('click', function() {
             selectFilesService(this.dataset.id);
         });
-        icon.src = 'img/host.svg';
     } else if (type == 'files') {
         block.addEventListener('click', function() {
             document.getElementById('import').click();
         });
-        icon.src = 'img/files.svg';
     } else if (type == 'repo') {
         block.addEventListener('click', function() {
             System.settings.connections.get(this.dataset.type).getAll(null, this.dataset.id);
             selectFilesService(this.dataset.type, this.dataset.id + '/contents/');
         });
-        icon.src = 'img/repo.svg';
     } else if (type == 'folder') {
         block.addEventListener('click', function() {
             System.settings.connections.get(this.dataset.type).getAll(this.dataset.id);
             selectFilesService(this.dataset.type, this.dataset.id);
         });
-        icon.src = 'img/folder.svg';
     } else {
         block.addEventListener('click', function() {
             let files = System.settings.connections.get(this.dataset.type).files;
