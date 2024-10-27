@@ -361,7 +361,7 @@ export class FileServiceHYBFTS {
                     }
                 }
                 if (data.content) {
-                    data.content = new TextDecoder().decode(Uint8Array.from(window.atob(data.content), (m) => m.codePointAt(0)));
+                    data.content = new TextDecoder().decode(Uint8Array.from(window.atob(data.data), (m) => m.codePointAt(0)));
                 }
                 if (hasData == -1) {
                     thisClass.files.push({
@@ -389,16 +389,13 @@ export class FileServiceHYBFTS {
                         }
                     }
                     if (!hasData) {
-                        if (data[i].content) {
-                            data[i].content = new TextDecoder().decode(Uint8Array.from(window.atob(data[i].content), (m) => m.codePointAt(0)));
-                        } else if (!data[i].type || data[i].type != 'folder') {
+                        if (!data[i].type || data[i].type != 'folder') {
                             thisClass.getData(`${path}/${data[i].name}`);
                         }
                         thisClass.files.push({
                             type: data[i].type,
                             id: `${path}/${data[i].name}`,
-                            name: `${path}/${data[i].name}`,
-                            data: data[i].content
+                            name: `${path}/${data[i].name}`
                         });
                     }
                 }
@@ -413,16 +410,13 @@ export class FileServiceHYBFTS {
                         }
                     }
                     if (!hasData) {
-                        if (data[i].content) {
-                            data[i].content = new TextDecoder().decode(Uint8Array.from(window.atob(data[i].content), (m) => m.codePointAt(0)));
-                        } else if (!data[i].type || data[i].type != 'folder') {
+                        if (!data[i].type || data[i].type != 'folder') {
                             thisClass.getData(data[i].name);
                         }
                         thisClass.files.push({
                             type: data[i].type,
                             id: data[i].name,
-                            name: data[i].name,
-                            data: data[i].content
+                            name: data[i].name
                         });
                     }
                 }
