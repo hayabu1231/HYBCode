@@ -187,6 +187,7 @@ export class FileServiceGitHub {
                             id: `${repo}/contents/${data[i].path}`,
                             name: `${repo}/contents/${data[i].path}`,
                             data: data[i].content,
+                            sha: data[i].sha,
                             repo: repo
                         });
                     }
@@ -218,6 +219,7 @@ export class FileServiceGitHub {
                             id: `${path}/${data[i].name}`,
                             name: `${path}/${data[i].name}`,
                             data: data[i].content,
+                            sha: data[i].sha,
                             repo: path.replace(data[i].path, '').replace('/contents/', '')
                         });
                     }
@@ -267,7 +269,7 @@ export class FileServiceGitHub {
         } else {
             var sendData = {
                 message: window.prompt('コミット用のコメントを入力してください。'),
-                content: sendData.content
+                content: window.btoa(data.data)
             }
             var thisClass = this;
             this._put(`/repos/${data.id}`, sendData, function(status, data) {
