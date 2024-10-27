@@ -324,6 +324,11 @@ const File = {
         };
         if (FileInfo.id) {
             data.id = FileInfo.id;
+            EditingFiles.forEach(function(EditingFile) {
+                if (EditingFile.id == FileInfo.id && EditingFile.repo) {
+                    data.repo = EditingFile.repo
+                }
+            });
         }
         if (!FileInfo.service || !System.settings.connections.has(FileInfo.service)) {
             System.notice.add('ローカルに保存します');
