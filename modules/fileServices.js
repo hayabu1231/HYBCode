@@ -250,7 +250,7 @@ export class FileServiceGitHub {
             content: window.btoa(String.fromCharCode.apply(null, new TextEncoder().encode(data.data))),
             encoding: "base64"
         };
-        this._post(`/repos/${data.repo}`, sendData, function(status, data) {
+        this._post(`/repos/${data.repo}/git/blobs`, sendData, function(status, data) {
             sendData = {
                 message: window.prompt('コミット用のコメントを入力してください。'),
                 content: sendData.content,
