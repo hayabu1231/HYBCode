@@ -179,6 +179,10 @@ function addFilesServices(type, data) {
     if (type == 'local') {
         service = new FileServiceLocal(System.settings.db);
     } else if (type == 'github') {
+        if (!data.token) {
+            System.notice.add('トークンは必須入力です。');
+            return;
+        }
         service = new FileServiceGitHub(data.token);
     } else if (type == 'hybfts') {
         service = new FileServiceHYBFTS(data.address, data.user.id, data.user.password);

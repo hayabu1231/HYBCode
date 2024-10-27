@@ -250,6 +250,7 @@ export class FileServiceGitHub {
             content: window.btoa(String.fromCharCode(...new TextEncoder().encode(data.data))),
             encoding: "base64"
         };
+        var id = data.id;
         var thisClass = this;
         this._post(`repos/${data.repo}/git/blobs`, sendData, function(status, data) {
             sendData = {
@@ -257,7 +258,7 @@ export class FileServiceGitHub {
                 content: sendData.content,
                 sha: data.sha
             };
-            thisClass._put(`repos/${data.id}`, sendData, function(status, data) {
+            thisClass._put(`repos/${id}`, sendData, function(status, data) {
                 thisClass.getAll();
                 returnFunction(data);
             });
