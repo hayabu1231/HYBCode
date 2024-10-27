@@ -250,14 +250,14 @@ export class FileServiceGitHub {
             content: window.btoa(String.fromCharCode(...new TextEncoder().encode(data.data))),
             encoding: "base64"
         };
+        var thisClass = this;
         this._post(`repos/${data.repo}/git/blobs`, sendData, function(status, data) {
             sendData = {
                 message: window.prompt('コミット用のコメントを入力してください。'),
                 content: sendData.content,
                 sha: data.sha
             };
-            var thisClass = this;
-            this._put(`repos/${data.id}`, sendData, function(status, data) {
+            thisClass._put(`repos/${data.id}`, sendData, function(status, data) {
                 thisClass.getAll();
                 returnFunction(data);
             });
