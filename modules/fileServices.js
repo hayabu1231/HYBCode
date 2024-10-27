@@ -247,7 +247,7 @@ export class FileServiceGitHub {
     }
     save(data, returnFunction) {
         var sendData = {
-            content: window.btoa(String.fromCharCode.apply(null, new TextEncoder().encode(data.data))),
+            content: window.btoa(String.fromCharCode(...new TextEncoder().encode(data.data))),
             encoding: "base64"
         };
         this._post(`repos/${data.repo}/git/blobs`, sendData, function(status, data) {
