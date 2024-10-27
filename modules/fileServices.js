@@ -20,7 +20,7 @@ class Connection {
         this.xhr.send(data);
     }
     _receive(thisClass, returnFunction) {
-        if (thisClass.xhr.readyState === 4 && thisClass.xhr.status == 200) {
+        if (thisClass.xhr.readyState === 4 && (thisClass.xhr.status == 200 || thisClass.xhr.status == 201)) {
             var data = JSON.parse(thisClass.xhr.responseText);
             returnFunction(thisClass.xhr.status, data);
         } else if (thisClass.xhr.readyState === 4 && thisClass.xhr.status == 403) {
