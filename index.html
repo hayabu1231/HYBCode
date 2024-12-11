@@ -68,12 +68,12 @@
 <dialog id="screen-Files" class="screen-Files" data-type="Files" data-modal="false">
     <button class="btn-screen_close" data-name="Files">×</button>
     <input type="file" id="import" style="display:none;" accept="">
-    <div class="files-folders">
+    <div id="screen-Files-folders" class="files-folders">
         <div id="screen-Files-services" class="files-folder">
             <div class="files-file screen-Files-services" onclick="document.getElementById('import').click();">Files</div>
         </div>
-        <div id="screen-Files-folders" class="files-folders">
-            <div class="files-folder"><div class="files-file">サービスを選択して下さい</div></div>
+        <div class="files-folder">
+            <div class="files-file">サービスを選択して下さい</div>
         </div>
     </div>
 </dialog>
