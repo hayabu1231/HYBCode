@@ -82,6 +82,7 @@ body{
 .files-folders {
     display: flex;
     justify-content: unsafe;
+    width: max-content;
     height: 100%;
     overflow-y: hidden;
 }
