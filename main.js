@@ -227,7 +227,7 @@ function showFilesServices(id) {
         connections.push(service_element);
     });
     services.push(createFileBlock('files', null, 'Files'));
-    document.getElementById('screen-Files-services').replaceChildren(...services);
+    document.getElementById('screen-Files-folders').replaceChildren(...services);
     document.getElementById('screen-Connections-list').replaceChildren(...connections);
 }
 function selectFilesService(name, path) {
@@ -294,7 +294,7 @@ function selectFilesService(name, path) {
         folder.replaceChildren(...folders[i]);
         folders[i] = folder;
     }
-    document.getElementById('screen-Files-folders').replaceChildren(...folders);
+    document.getElementById('screen-Files-folders').append(...folders);
 }
 
 //ファイル管理用DB（OPFSが使えるようになったら更新しようね）
