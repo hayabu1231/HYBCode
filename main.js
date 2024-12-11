@@ -250,8 +250,8 @@ function selectFilesService(name, path) {
     }
     if (System.settings.connections.has(name)) {
         var files = System.settings.connections.get(name).files;
-        for (var i = 0; i < files.length; i++) {
-            let path = files[i].name;
+        files.forEach((file) => {
+            let path = file.name;
             if (path.endsWith('/')) {
                 path = path.slice(0, -1);
             }
@@ -262,7 +262,7 @@ function selectFilesService(name, path) {
             } else {
                 for (var j = 0; j < path.length; j++) {
                     if (path[j] == FilePicker.path[j]) {
-                        if (files[i].type == 'folders' || files[i].type == 'repo') {
+                        if (file.type == 'folders' || file.type == 'repo') {
                             fileNum = j;
                         } else {
                             fileNum = j + 1;
@@ -274,9 +274,9 @@ function selectFilesService(name, path) {
                 }
             }
             if (fileNum > -1) {
-                folders[fileNum].push(createFileBlock(files[i].type, files[i].id, path.slice(fileNum).join('/'), files[i].date, files[i].data, name));
+                folders[fileNum].push(createFileBlock(file.type, file.id, path.slice(fileNum).join('/'), file.date, file.data, name));
             }
-        }
+        });
         for (var i = 0; i < folders.length; i++) {
             if (folders[i].length == 0) {
                 var file = document.createElement('div');

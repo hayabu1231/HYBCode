@@ -36,7 +36,7 @@ export class FileServiceLocal {
         this.id = 'local';
         this.name = 'local';
         this.type = 'local';
-        this.files = [];
+        this.files = new Map();
         this._db = db;
         this.getAll();
     }
@@ -46,7 +46,9 @@ export class FileServiceLocal {
         var request = filesDB.getAll();
         var thisClass = this;
         request.onsuccess = function(event) {
-            thisClass.files = event.target.result;
+            for (var i = 0; i < event.target.result; i++) {
+                thisClass.files.set(event.target.result[i].id, event.target.result[i]);
+            }
         };
     }
     save(data, returnFunction) {
@@ -70,7 +72,7 @@ export class FileServiceGitHub {
         this._username = '';
         this.name = 'loading@github';
         this.type = 'github';
-        this.files = [];
+        this.files = new Map();
         this._token = token;
         this._login();
     }
@@ -128,26 +130,16 @@ export class FileServiceGitHub {
             var thisClass = this;
             var url = `repos/${path}`;
             var returnFunction = function(status, data) {
-                var hasData = -1;
-                for (let j = 0; j < thisClass.files.length; j++) {
-                    if (thisClass.files[j].id == path) {
-                        hasData = j;
-                    }
-                }
                 if (data.content) {
                     data.content = new TextDecoder().decode(Uint8Array.from(window.atob(data.content), (m) => m.codePointAt(0)));
                 }
-                if (hasData == -1) {
-                    thisClass.files.push({
-                        type: null,
-                        id: path,
-                        name: path,
-                        data: data.content,
-                        repo: path.replace(data.path, '').replace('/contents/', '')
-                    });
-                } else {
-                    thisClass.files[hasData].data = data.content;
-                }
+                thisClass.files.set(path, {
+                    type: null,
+                    id: path,
+                    name: path,
+                    data: data.content,
+                    repo: path.replace(data.path, '').replace('/contents/', '')
+                });
             };
             this._get(url, null, returnFunction);
         }
@@ -164,13 +156,7 @@ export class FileServiceGitHub {
             }
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
-                    var hasData = false;
-                    for (let j = 0; j < thisClass.files.length; j++) {
-                        if (thisClass.files[j].id == `${repo}/contents/${data[i].path}`) {
-                            hasData = true;
-                        }
-                    }
-                    if (!hasData) {
+                    if (!thisClass.files.has(`${repo}/contents/${data[i].path}`)) {
                         if (data[i].type == 'dir') {
                             data[i].type = 'folder';
                         } else {
@@ -181,7 +167,7 @@ export class FileServiceGitHub {
                                 thisClass.getData(`${repo}/contents/${data[i].path}`);
                             }
                         }
-                        thisClass.files.push({
+                        thisClass.files.set(`${repo}/contents/${data[i].path}`, {
                             type: data[i].type,
                             id: `${repo}/contents/${data[i].path}`,
                             name: `${repo}/contents/${data[i].path}`,
@@ -195,13 +181,7 @@ export class FileServiceGitHub {
             url = `repos/${path}`;
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
-                    var hasData = false;
-                    for (let j = 0; j < thisClass.files.length; j++) {
-                        if (thisClass.files[j].id == `${path}/${data[i].name}`) {
-                            hasData = true;
-                        }
-                    }
-                    if (!hasData) {
+                    if (!thisClass.files.has(`${path}/${data[i].name}`)) {
                         if (data[i].type == 'dir') {
                             data[i].type = 'folder';
                         } else {
@@ -212,7 +192,7 @@ export class FileServiceGitHub {
                                 thisClass.getData(`${path}/${data[i].name}`);
                             }
                         }
-                        thisClass.files.push({
+                        thisClass.files.set(`${path}/${data[i].name}`, {
                             type: data[i].type,
                             id: `${path}/${data[i].name}`,
                             name: `${path}/${data[i].name}`,
@@ -226,13 +206,7 @@ export class FileServiceGitHub {
             url = `user/repos`;
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
-                    var hasData = false;
-                    for (let j = 0; j < thisClass.files.length; j++) {
-                        if (thisClass.files[j].id == data[i].full_name) {
-                            hasData = true;
-                        }
-                    }
-                    if (!hasData) {
+                    if (!thisClass.files.has(data[i].full_name)) {
                         thisClass.files.push({
                             type: 'repo',
                             id: data[i].full_name,
@@ -270,7 +244,7 @@ export class FileServiceHYBFTS {
         this.id = `${address}@${id}@hybfts`;
         this.name = `${address}@${id}@hybfts`;
         this.type = 'hybfts';
-        this.files = [];
+        this.files = new Map();
         this.xhr = new XMLHttpRequest();
         var thisClass = this;
         this.xhr.addEventListener('load', function() {
@@ -354,25 +328,15 @@ export class FileServiceHYBFTS {
             var thisClass = this;
             var url = `file-data/`;
             var returnFunction = function(status, data) {
-                var hasData = -1;
-                for (let j = 0; j < thisClass.files.length; j++) {
-                    if (thisClass.files[j].id == path) {
-                        hasData = j;
-                    }
-                }
                 if (data.content) {
                     data.content = new TextDecoder().decode(Uint8Array.from(window.atob(data.data), (m) => m.codePointAt(0)));
                 }
-                if (hasData == -1) {
-                    thisClass.files.push({
-                        type: null,
-                        id: path,
-                        name: path,
-                        data: data.content
-                    });
-                } else {
-                    thisClass.files[hasData].data = data.content;
-                }
+                thisClass.files.set(path, {
+                    type: null,
+                    id: path,
+                    name: path,
+                    data: data.content
+                });
             };
             this._get(url, `location=${path}`, returnFunction);
         }
@@ -382,17 +346,11 @@ export class FileServiceHYBFTS {
         if (path) {
             this._get('file-list/', `location=${path}`, function(status, data) {
                 for (let i = 0; i < data.files.length; i++) {
-                    var hasData = false;
-                    for (let j = 0; j < thisClass.files.length; j++) {
-                        if (thisClass.files[j].id == `${path}/${data[i].name}`) {
-                            hasData = true;
-                        }
-                    }
-                    if (!hasData) {
+                    if (!thisClass.files.has(`${path}/${data[i].name}`)) {
                         if (!data[i].type || data[i].type != 'folder') {
                             thisClass.getData(`${path}/${data[i].name}`);
                         }
-                        thisClass.files.push({
+                        thisClass.files.set(`${path}/${data[i].name}`, {
                             type: data[i].type,
                             id: `${path}/${data[i].name}`,
                             name: `${path}/${data[i].name}`
@@ -403,17 +361,11 @@ export class FileServiceHYBFTS {
         } else {
             this._get('file-list/', `location=`, function(status, data) {
                 for (let i = 0; i < data.files.length; i++) {
-                    var hasData = false;
-                    for (let j = 0; j < thisClass.files.length; j++) {
-                        if (thisClass.files[j].id == `${path}/${data[i].name}`) {
-                            hasData = true;
-                        }
-                    }
-                    if (!hasData) {
+                    if (!thisClass.files.has(data[i].name)) {
                         if (!data[i].type || data[i].type != 'folder') {
                             thisClass.getData(data[i].name);
                         }
-                        thisClass.files.push({
+                        thisClass.files.set(data[i].name, {
                             type: data[i].type,
                             id: data[i].name,
                             name: data[i].name
