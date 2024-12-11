@@ -93,7 +93,6 @@ body{
     min-width: 150px;
     overflow-x: stretch;
     overflow-y: scroll;
-    flex: 0 0;
 }
 .files-file {
     display: flex;
