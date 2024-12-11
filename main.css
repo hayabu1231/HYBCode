@@ -89,9 +89,9 @@ body{
 .files-folder {
     border-right: solid 1px #888;
     height: 100%;
-    width: max-content;
+    width: auto;
     min-width: 150px;
-    overflow-x: hidden;
+    overflow-x: stretch;
     overflow-y: scroll;
     flex: 0 0;
 }
