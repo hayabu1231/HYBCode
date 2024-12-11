@@ -82,16 +82,13 @@ body{
 .files-folders {
     display: flex;
     height: 100%;
-    width: 100%;
-    overflow-x: scroll;
     overflow-y: hidden;
 }
 .files-folder {
     border-right: solid 1px #888;
     height: 100%;
-    width: auto;
     min-width: 150px;
-    overflow-x: stretch;
+    overflow-x: hidden;
     overflow-y: scroll;
 }
 .files-file {
@@ -137,7 +134,8 @@ body{
     background: var(--main-background);
     color: var(--main-color);
     padding: 5px;
-    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: scroll;
 }
 .btn-screen_close {
     border: none;
