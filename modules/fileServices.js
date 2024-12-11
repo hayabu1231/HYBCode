@@ -207,7 +207,7 @@ export class FileServiceGitHub {
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
                     if (!thisClass.files.has(data[i].full_name)) {
-                        thisClass.files.push({
+                        thisClass.files.set(data[i].full_name, {
                             type: 'repo',
                             id: data[i].full_name,
                             name: `${data[i].name}@${data[i].owner.login}`
