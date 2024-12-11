@@ -79,6 +79,12 @@ body{
     flex: 1;
 }
 
+.files-folders-wrap {
+    width: 100%;
+    height: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
 .files-folders {
     display: flex;
     justify-content: unsafe;
@@ -136,8 +142,7 @@ body{
     background: var(--main-background);
     color: var(--main-color);
     padding: 5px;
-    overflow-y: hidden;
-    overflow-x: scroll;
+    overflow: hidden;
 }
 .btn-screen_close {
     position: sticky;
