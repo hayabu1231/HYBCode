@@ -132,6 +132,12 @@
         {
             "start": true,
             "end": true,
+            "reg": "vertical-align",
+            "color": "yellow"
+        },
+        {
+            "start": true,
+            "end": true,
             "reg": "white-space",
             "color": "yellow"
         },
