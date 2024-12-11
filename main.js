@@ -227,7 +227,10 @@ function showFilesServices(id) {
         connections.push(service_element);
     });
     services.push(createFileBlock('files', null, 'Files'));
-    document.getElementById('screen-Files-folders').replaceChildren(...services);
+    var folder = document.createElement('div');
+    folder.className = 'files-folder';
+    folder.append(...services);
+    document.getElementById('screen-Files-folders').replaceChildren(folder);
     document.getElementById('screen-Connections-list').replaceChildren(...connections);
 }
 function selectFilesService(name, path) {
