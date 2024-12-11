@@ -152,14 +152,20 @@ function createFileBlock(type, id, name, date, data, service) {
     var info = document.createElement('div');
     var name_item = document.createElement('p');
     name_item.innerText = name;
+    name_item.className = 'files-file-name';
     info.append(name_item);
     if (isFile) {
+        var file_info = document.createElement('div');
+        file_info.className = 'files-file-info';
         var file_date = document.createElement('small');
-        file_date.innerText = date;
-        info.append(file_date);
+        if (date) {
+            file_date.innerText = date;
+        }
+        file_info.append(file_date);
         var file_size = document.createElement('small');
         file_size.innerText = calcDataSize(data);
-        info.append(file_size);
+        file_info.append(file_size);
+        info.append(file_info);
     }
     block.append(info);
     return block;
