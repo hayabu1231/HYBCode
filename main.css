@@ -103,6 +103,9 @@ body{
 .files-file[data-selected="true"] {
     background: #888;
 }
+.files-file-name {
+    white-space: nowrap;
+}
 
 .screen {
     background: var(--main-background);
