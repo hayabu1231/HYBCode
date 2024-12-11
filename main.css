@@ -140,6 +140,8 @@ body{
     overflow-x: scroll;
 }
 .btn-screen_close {
+    position: sticky;
+    left: 5px;
     border: none;
     border-radius: 0;
     background: none;
