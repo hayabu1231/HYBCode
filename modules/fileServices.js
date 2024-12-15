@@ -20,7 +20,7 @@ class Connection {
         this.xhr.send(data);
     }
     _receive(thisClass, returnFunction) {
-        if (thisClass.xhr.readyState === 4 && thisClass.xhr.status == 200) {
+        if (thisClass.xhr.readyState === 4 && (thisClass.xhr.status == 200 || thisClass.xhr.status == 201)) {
             var data = JSON.parse(thisClass.xhr.responseText);
             returnFunction(thisClass.xhr.status, data);
         } else if (thisClass.xhr.readyState === 4 && thisClass.xhr.status == 403) {
@@ -36,7 +36,7 @@ export class FileServiceLocal {
         this.id = 'local';
         this.name = 'local';
         this.type = 'local';
-        this.files = [];
+        this.files = new Map();
         this._db = db;
         this.getAll();
     }
@@ -46,7 +46,9 @@ export class FileServiceLocal {
         var request = filesDB.getAll();
         var thisClass = this;
         request.onsuccess = function(event) {
-            thisClass.files = event.target.result;
+            for (var i = 0; i < event.target.result; i++) {
+                thisClass.files.set(event.target.result[i].id, event.target.result[i]);
+            }
         };
     }
     save(data, returnFunction) {
@@ -70,7 +72,7 @@ export class FileServiceGitHub {
         this._username = '';
         this.name = 'loading@github';
         this.type = 'github';
-        this.files = [];
+        this.files = new Map();
         this._token = token;
         this._login();
     }
@@ -97,7 +99,7 @@ export class FileServiceGitHub {
         }
         new Connection(request, returnFunction);
     }
-    _send(url, data, returnFunction) {
+    _post(url, data, returnFunction) {
         let request = {
             method: 'POST',
             url: `https://api.github.com/${url}`,
@@ -106,7 +108,7 @@ export class FileServiceGitHub {
                 {id: 'authorization', value: 'token ' + this._token},
                 {id: 'X-GitHub-Api-Version', value: '2022-11-28'}
             ],
-            data: data
+            data: JSON.stringify(data)
         };
         new Connection(request, returnFunction);
     }
@@ -119,7 +121,7 @@ export class FileServiceGitHub {
                 {id: 'authorization', value: 'token ' + this._token},
                 {id: 'X-GitHub-Api-Version', value: '2022-11-28'}
             ],
-            data: data
+            data: JSON.stringify(data)
         };
         new Connection(request, returnFunction);
     }
@@ -128,25 +130,16 @@ export class FileServiceGitHub {
             var thisClass = this;
             var url = `repos/${path}`;
             var returnFunction = function(status, data) {
-                var hasData = -1;
-                for (let j = 0; j < thisClass.files.length; j++) {
-                    if (thisClass.files[j].id == path) {
-                        hasData = j;
-                    }
-                }
                 if (data.content) {
                     data.content = new TextDecoder().decode(Uint8Array.from(window.atob(data.content), (m) => m.codePointAt(0)));
                 }
-                if (hasData == -1) {
-                    thisClass.files.push({
-                        type: null,
-                        id: path,
-                        name: path,
-                        data: data.content
-                    });
-                } else {
-                    thisClass.files[hasData].data = data.content;
-                }
+                thisClass.files.set(path, {
+                    type: null,
+                    id: path,
+                    name: path,
+                    data: data.content,
+                    repo: path.replace(data.path, '').replace('/contents/', '')
+                });
             };
             this._get(url, null, returnFunction);
         }
@@ -163,13 +156,7 @@ export class FileServiceGitHub {
             }
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
-                    var hasData = false;
-                    for (let j = 0; j < thisClass.files.length; j++) {
-                        if (thisClass.files[j].id == `${repo}/contents/${data[i].path}`) {
-                            hasData = true;
-                        }
-                    }
-                    if (!hasData) {
+                    if (!thisClass.files.has(`${repo}/contents/${data[i].path}`)) {
                         if (data[i].type == 'dir') {
                             data[i].type = 'folder';
                         } else {
@@ -180,11 +167,12 @@ export class FileServiceGitHub {
                                 thisClass.getData(`${repo}/contents/${data[i].path}`);
                             }
                         }
-                        thisClass.files.push({
+                        thisClass.files.set(`${repo}/contents/${data[i].path}`, {
                             type: data[i].type,
                             id: `${repo}/contents/${data[i].path}`,
                             name: `${repo}/contents/${data[i].path}`,
-                            data: data[i].content
+                            data: data[i].content,
+                            repo: repo
                         });
                     }
                 }
@@ -193,13 +181,7 @@ export class FileServiceGitHub {
             url = `repos/${path}`;
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
-                    var hasData = false;
-                    for (let j = 0; j < thisClass.files.length; j++) {
-                        if (thisClass.files[j].id == `${path}/${data[i].name}`) {
-                            hasData = true;
-                        }
-                    }
-                    if (!hasData) {
+                    if (!thisClass.files.has(`${path}/${data[i].name}`)) {
                         if (data[i].type == 'dir') {
                             data[i].type = 'folder';
                         } else {
@@ -207,33 +189,28 @@ export class FileServiceGitHub {
                             if (data[i].content) {
                                 data[i].content = new TextDecoder().decode(Uint8Array.from(window.atob(data[i].content), (m) => m.codePointAt(0)));
                             } else {
-                                thisClass.getData(`${path}/${data[i].path}`);
+                                thisClass.getData(`${path}/${data[i].name}`);
                             }
                         }
-                        thisClass.files.push({
+                        thisClass.files.set(`${path}/${data[i].name}`, {
                             type: data[i].type,
                             id: `${path}/${data[i].name}`,
                             name: `${path}/${data[i].name}`,
-                            data: data[i].content
+                            data: data[i].content,
+                            repo: path.replace(data[i].path, '').replace('/contents/', '')
                         });
                     }
                 }
             };
         } else {
-            url = `users/${this._username}/repos`;
+            url = `user/repos`;
             returnFunction = function(status, data) {
                 for (let i = 0; i < data.length; i++) {
-                    var hasData = false;
-                    for (let j = 0; j < thisClass.files.length; j++) {
-                        if (thisClass.files[j].id == data[i].full_name) {
-                            hasData = true;
-                        }
-                    }
-                    if (!hasData) {
-                        thisClass.files.push({
+                    if (!thisClass.files.has(data[i].full_name)) {
+                        thisClass.files.set(data[i].full_name, {
                             type: 'repo',
                             id: data[i].full_name,
-                            name: data[i].name
+                            name: `${data[i].name}@${data[i].owner.login}`
                         });
                     }
                 }
@@ -243,17 +220,23 @@ export class FileServiceGitHub {
         this._get(url, data, returnFunction);
     }
     save(data, returnFunction) {
-        /*
+        var sendData = {
+            content: window.btoa(String.fromCharCode(...new TextEncoder().encode(data.data))),
+            encoding: "base64"
+        };
+        var id = data.id;
         var thisClass = this;
-        this._put(`/repos/${data.id}`, {
-            message: '',
-            content: window.btoa(data.data),
-            sha: ''
-        }, function(status, data) {
-            thisClass.getAll();
-            returnFunction(data);
+        this._post(`repos/${data.repo}/git/blobs`, sendData, function(status, data) {
+            sendData = {
+                message: window.prompt('コミット用のコメントを入力してください。'),
+                content: sendData.content,
+                sha: data.sha
+            };
+            thisClass._put(`repos/${id}`, sendData, function(status, data) {
+                thisClass.getAll();
+                returnFunction(data);
+            });
         });
-        */
     }
 }
 export class FileServiceHYBFTS {
@@ -261,9 +244,8 @@ export class FileServiceHYBFTS {
         this.id = `${address}@${id}@hybfts`;
         this.name = `${address}@${id}@hybfts`;
         this.type = 'hybfts';
-        this.files = [];
+        this.files = new Map();
         this.xhr = new XMLHttpRequest();
-        this._selectedPath = '';
         var thisClass = this;
         this.xhr.addEventListener('load', function() {
             thisClass._receive(thisClass);
@@ -272,35 +254,48 @@ export class FileServiceHYBFTS {
             throw new Error('通信中にエラーが発生しました');
         });
         this._address = address;
+        this._session = null;
         this._login(id, password);
     }
     _login(id, password) {
-        this.xhr.open('POST', `https://${this._address}/login/`, true);
-        this.xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        this.xhr.send(`id=${id}&password=${password}`);
+        var thisClass = this;
+        this._post('login/', `id=${id}&password=${password}`, function(status, data) {
+            thisClass._session = data.session;
+            thisClass.getAll();
+        });
     }
-    _get(url,data) {
-        this.xhr.open('GET', `https://${this._address}/${url}?location=${this._selectedPath}&data=${encodeURI(JSON.stringify(data))}`, true);
-        this.xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        this.xhr.setRequestHeader('authorization', 'HYB-key ' + this._session);
-        this.xhr.send();
+    _get(url, data, returnFunction) {
+        let request = {
+            method: 'GET',
+            url: `https://${this._address}/${url}`,
+            headers: []
+        };
+        if (this._session) {
+            request.headers.push({id: 'authorization', value: 'HYB-key ' + this._session});
+        }
+        if (data) {
+            request.url = `https://${this._address}/${url}?${data}`;
+        }
+        new Connection(request, returnFunction);
     }
-    _send(url,data) {
-        data.location = this._selectedPath;
-        this.xhr.open('POST', `https://${this._address}/${url}`, true);
-        this.xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-        this.xhr.setRequestHeader('authorization', 'HYB-key ' + this._session);
-        this.xhr.send(encodeURIComponent(JSON.stringify(data)));
+    _post(url, data, returnFunction) {
+        let request = {
+            method: 'POST',
+            url: `https://${this._address}/${url}`,
+            headers: []
+        };
+        if (this._session) {
+            request.headers.push({id: 'authorization', value: 'HYB-key ' + this._session});
+        }
+        if (data) {
+            request.data = encodeURIComponent(JSON.stringify(data));
+        }
+        new Connection(request, returnFunction);
     }
     _receive(thisClass) {
         if (thisClass.xhr.readyState === 4 && thisClass.xhr.status == 200) {
             var data = JSON.parse(thisClass.xhr.responseText);
-            if (data.type == 'login') {
-                thisClass._session = data.session;
-                thisClass.getAll();
-            } else if (data.type == 'file-list') {
-                thisClass.files = data.files;
-            } else if (data.type == 'create' && data.status == 'success') {
+            if (data.type == 'create' && data.status == 'success') {
                 alert('フォルダ作成完了しました。');
                 thisClass.getAll();
             } else if (data.type == 'upload' && data.status == 'success') {
@@ -328,12 +323,61 @@ export class FileServiceHYBFTS {
             throw new Error('失敗した可能性があります' + thisClass.xhr.status);
         }
     }
-    getAll() {
-        this._get('file-list/');
+    getData(path) {
+        if (path) {
+            var thisClass = this;
+            var url = `file-data/`;
+            var returnFunction = function(status, data) {
+                if (data.content) {
+                    data.content = new TextDecoder().decode(Uint8Array.from(window.atob(data.data), (m) => m.codePointAt(0)));
+                }
+                thisClass.files.set(path, {
+                    type: null,
+                    id: path,
+                    name: path,
+                    data: data.content
+                });
+            };
+            this._get(url, `location=${path}`, returnFunction);
+        }
+    }
+    getAll(path) {
+        var thisClass = this;
+        if (path) {
+            this._get('file-list/', `location=${path}`, function(status, data) {
+                for (let i = 0; i < data.files.length; i++) {
+                    if (!thisClass.files.has(`${path}/${data[i].name}`)) {
+                        if (!data[i].type || data[i].type != 'folder') {
+                            thisClass.getData(`${path}/${data[i].name}`);
+                        }
+                        thisClass.files.set(`${path}/${data[i].name}`, {
+                            type: data[i].type,
+                            id: `${path}/${data[i].name}`,
+                            name: `${path}/${data[i].name}`
+                        });
+                    }
+                }
+            });
+        } else {
+            this._get('file-list/', `location=`, function(status, data) {
+                for (let i = 0; i < data.files.length; i++) {
+                    if (!thisClass.files.has(data[i].name)) {
+                        if (!data[i].type || data[i].type != 'folder') {
+                            thisClass.getData(data[i].name);
+                        }
+                        thisClass.files.set(data[i].name, {
+                            type: data[i].type,
+                            id: data[i].name,
+                            name: data[i].name
+                        });
+                    }
+                }
+            });
+        }
     }
     save(data, returnFunction) {
         /*
-        this._send();
+        this._post();
         returnFunction(id);
         */
     }

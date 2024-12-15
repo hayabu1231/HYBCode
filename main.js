@@ -113,28 +113,25 @@ function createFileBlock(type, id, name, date, data, service) {
     block.dataset.id = id;
     block.dataset.type = service;
     var icon = document.createElement('img');
+    icon.src = `img/${type}.svg`;
     if (type == 'host') {
         block.addEventListener('click', function() {
             selectFilesService(this.dataset.id);
         });
-        icon.src = 'img/host.svg';
     } else if (type == 'files') {
         block.addEventListener('click', function() {
             document.getElementById('import').click();
         });
-        icon.src = 'img/files.svg';
     } else if (type == 'repo') {
         block.addEventListener('click', function() {
             System.settings.connections.get(this.dataset.type).getAll(null, this.dataset.id);
             selectFilesService(this.dataset.type, this.dataset.id + '/contents/');
         });
-        icon.src = 'img/repo.svg';
     } else if (type == 'folder') {
         block.addEventListener('click', function() {
             System.settings.connections.get(this.dataset.type).getAll(this.dataset.id);
             selectFilesService(this.dataset.type, this.dataset.id);
         });
-        icon.src = 'img/folder.svg';
     } else {
         block.addEventListener('click', function() {
             let files = System.settings.connections.get(this.dataset.type).files;
@@ -155,14 +152,20 @@ function createFileBlock(type, id, name, date, data, service) {
     var info = document.createElement('div');
     var name_item = document.createElement('p');
     name_item.innerText = name;
+    name_item.className = 'files-file-name';
     info.append(name_item);
     if (isFile) {
+        var file_info = document.createElement('div');
+        file_info.className = 'files-file-info';
         var file_date = document.createElement('small');
-        file_date.innerText = date;
-        info.append(file_date);
+        if (date) {
+            file_date.innerText = date;
+        }
+        file_info.append(file_date);
         var file_size = document.createElement('small');
         file_size.innerText = calcDataSize(data);
-        info.append(file_size);
+        file_info.append(file_size);
+        info.append(file_info);
     }
     block.append(info);
     return block;
@@ -182,6 +185,10 @@ function addFilesServices(type, data) {
     if (type == 'local') {
         service = new FileServiceLocal(System.settings.db);
     } else if (type == 'github') {
+        if (!data.token) {
+            System.notice.add('トークンは必須入力です。');
+            return;
+        }
         service = new FileServiceGitHub(data.token);
     } else if (type == 'hybfts') {
         service = new FileServiceHYBFTS(data.address, data.user.id, data.user.password);
@@ -220,7 +227,10 @@ function showFilesServices(id) {
         connections.push(service_element);
     });
     services.push(createFileBlock('files', null, 'Files'));
-    document.getElementById('screen-Files-services').replaceChildren(...services);
+    var folder = document.createElement('div');
+    folder.className = 'files-folder';
+    folder.append(...services);
+    document.getElementById('screen-Files-folders').replaceChildren(folder);
     document.getElementById('screen-Connections-list').replaceChildren(...connections);
 }
 function selectFilesService(name, path) {
@@ -240,8 +250,8 @@ function selectFilesService(name, path) {
     }
     if (System.settings.connections.has(name)) {
         var files = System.settings.connections.get(name).files;
-        for (var i = 0; i < files.length; i++) {
-            let path = files[i].name;
+        files.forEach((file) => {
+            let path = file.name;
             if (path.endsWith('/')) {
                 path = path.slice(0, -1);
             }
@@ -252,7 +262,7 @@ function selectFilesService(name, path) {
             } else {
                 for (var j = 0; j < path.length; j++) {
                     if (path[j] == FilePicker.path[j]) {
-                        if (files[i].type == 'folders' || files[i].type == 'repo') {
+                        if (file.type == 'folders' || file.type == 'repo') {
                             fileNum = j;
                         } else {
                             fileNum = j + 1;
@@ -264,9 +274,9 @@ function selectFilesService(name, path) {
                 }
             }
             if (fileNum > -1) {
-                folders[fileNum].push(createFileBlock(files[i].type, files[i].id, path.slice(fileNum).join('/'), files[i].date, files[i].data, name));
+                folders[fileNum].push(createFileBlock(file.type, file.id, path.slice(fileNum).join('/'), file.date, file.data, name));
             }
-        }
+        });
         for (var i = 0; i < folders.length; i++) {
             if (folders[i].length == 0) {
                 var file = document.createElement('div');
@@ -287,7 +297,7 @@ function selectFilesService(name, path) {
         folder.replaceChildren(...folders[i]);
         folders[i] = folder;
     }
-    document.getElementById('screen-Files-folders').replaceChildren(...folders);
+    document.getElementById('screen-Files-folders').append(...folders);
 }
 
 //ファイル管理用DB（OPFSが使えるようになったら更新しようね）
@@ -327,6 +337,11 @@ const File = {
         };
         if (FileInfo.id) {
             data.id = FileInfo.id;
+            EditingFiles.forEach(function(EditingFile) {
+                if (EditingFile.id == FileInfo.id && EditingFile.repo) {
+                    data.repo = EditingFile.repo
+                }
+            });
         }
         if (!FileInfo.service || !System.settings.connections.has(FileInfo.service)) {
             System.notice.add('ローカルに保存します');
