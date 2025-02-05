@@ -85,7 +85,6 @@ const System = {
 };
 
 var LanguageLoadCount = 0;
-UsableLanguages.set('application/json', LanguageJSON);
 const xhr = new XMLHttpRequest();
 xhr.addEventListener('load', function(data) {
     if (xhr.readyState === 4) {
@@ -97,6 +96,8 @@ xhr.addEventListener('load', function(data) {
             if (LanguageLoadCount < (UsableFileType.length - 1)) {
                 xhr.open('GET', `languages/${UsableFileType[LanguageLoadCount]}.json`, true);
                 xhr.send();
+            } else {
+                UsableLanguages.set('application/json', LanguageJSON);
             }
         }
     }
