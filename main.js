@@ -30,7 +30,7 @@ import * as LanguageJSON from './modules/languages/json.js';
 
 //固定
 const UsableFonts = Object.freeze(['sans-serif', 'serif', 'fantasy', 'system-ui', 'monospace']);
-const UsableFileType = Object.freeze(['JSON', 'text', 'JavaScript', 'HTML', 'CSV',  'CSS']);
+const UsableFileType = Object.freeze(['text', 'JavaScript', 'HTML', 'CSV',  'CSS', 'JSON']);
 
 //時々、変更
 const UsableLanguages = new Map();
@@ -84,7 +84,7 @@ const System = {
     }
 };
 
-var LanguageLoadCount = 1;
+var LanguageLoadCount = 0;
 UsableLanguages.set('application/json', LanguageJSON);
 const xhr = new XMLHttpRequest();
 xhr.addEventListener('load', function(data) {
@@ -94,7 +94,7 @@ xhr.addEventListener('load', function(data) {
             UsableLanguages.set(data.type, new Language(data.name, data.type, data.extension, data.list, data.start, data.end, data.commentOut, data.braces, System.settings.indent));
             change();
             LanguageLoadCount++;
-            if (LanguageLoadCount < UsableFileType.length) {
+            if (LanguageLoadCount < (UsableFileType.length - 1)) {
                 xhr.open('GET', `languages/${UsableFileType[LanguageLoadCount]}.json`, true);
                 xhr.send();
             }

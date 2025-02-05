@@ -63,6 +63,7 @@ body{
     border-top: solid 0.5px #888;
     background: none;
     padding: 5px;
+    color: var(--main-color);
 }
 .menu_files {
     display: flex;
