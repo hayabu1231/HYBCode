@@ -1,4 +1,8 @@
-function checkSpell(text) {
+export var type = 'application/json';
+export var name = 'JSON';
+export var extension = 'json';
+
+export function checkSpell(text) {
     let result = '';
     try {
         JSON.parse(text);
@@ -6,14 +10,8 @@ function checkSpell(text) {
         result = e.message
     }
     return result;
-}
-
-export var type = 'application/json';
-export var name = 'JSON';
-export var extension = 'json';
-
-export var checkSpell = checkSpell;
-export var indent = (text) => {
+};
+export function indent(text) {
     let data = JSON.parse(text);
     return JSON.stringify(data, null, 4);
 };
@@ -33,7 +31,7 @@ const searchList = [
         "color": "blue"
     }
 ];
-function parse(text) {
+export function parse(text) {
     text = quotesCheck(text);
     for (var i = 0; i < searchList.length; i++) {
         text = text.replaceAll(searchList[i].reg, '$1<span_class="' + searchList[i].color + '">$2</span>$3');
@@ -44,7 +42,7 @@ function parse(text) {
     text = text.replaceAll('<span_style', '<span style');
     text = text.replaceAll('<span_class', '<span class');
     return text;
-}
+};
 function quotesCheck(text) {
     var result = '';
     var mode = 'none';//none,text,colored,escape
@@ -81,9 +79,8 @@ function colorCode(text) {
     return text;
 }
 
-export var parse = (text) => {
-    return parse(text);
-    /*
+/*
+var parse = (text) => {
     正式なパーサー（まだ準備中）
     let data = [{
         type: 'normal',
@@ -122,6 +119,6 @@ export var parse = (text) => {
         }
         data[position].value += text[i];
     }
-    */
     return data;
 };
+*/
