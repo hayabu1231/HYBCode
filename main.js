@@ -85,7 +85,7 @@ const System = {
 };
 
 var LanguageLoadCount = 1;
-UsableLanguages.set('JSON', LanguageJSON);
+UsableLanguages.set('application/json', LanguageJSON);
 const xhr = new XMLHttpRequest();
 xhr.addEventListener('load', function(data) {
     if (xhr.readyState === 4) {
