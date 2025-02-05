@@ -8,12 +8,12 @@ function checkSpell(text) {
     return result;
 }
 
-exports.type = 'application/json';
-exports.name = 'JSON';
-exports.extension = 'json';
+export var type = 'application/json';
+export var name = 'JSON';
+export var extension = 'json';
 
-exports.checkSpell = checkSpell;
-exports.indent = (text) => {
+export var checkSpell = checkSpell;
+export var indent = (text) => {
     let data = JSON.parse(text);
     return JSON.stringify(data, null, 4);
 };
@@ -81,7 +81,7 @@ function colorCode(text) {
     return text;
 }
 
-exports.parse = (text) => {
+export var parse = (text) => {
     return parse(text);
     /*
     正式なパーサー（まだ準備中）
