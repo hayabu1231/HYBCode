@@ -26,7 +26,7 @@ import { Language } from './modules/language.js';
 import { FileServiceLocal, FileServiceGitHub, FileServiceHYBFTS } from './modules/fileServices.js';
 
 //Language個別ファイル（必須）
-import * as LanguageJSON from './modules/language/json.js';
+import * as LanguageJSON from './modules/languages/json.js';
 
 //固定
 const UsableFonts = Object.freeze(['sans-serif', 'serif', 'fantasy', 'system-ui']);
