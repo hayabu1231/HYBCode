@@ -25,9 +25,12 @@ navigator.serviceWorker.register("service-worker.js").then((registration) => {
 import { Language } from './modules/language.js';
 import { FileServiceLocal, FileServiceGitHub, FileServiceHYBFTS } from './modules/fileServices.js';
 
+//Language個別ファイル（必須）
+import * as LanguageJSON from './modules/language/json.js';
+
 //固定
 const UsableFonts = Object.freeze(['sans-serif', 'serif', 'fantasy', 'system-ui']);
-const UsableFileType = Object.freeze(['text', 'JavaScript', 'HTML', 'CSV',  'CSS', 'JSON']);
+const UsableFileType = Object.freeze(['JSON', 'text', 'JavaScript', 'HTML', 'CSV',  'CSS']);
 
 //時々、変更
 const UsableLanguages = new Map();
@@ -81,7 +84,8 @@ const System = {
     }
 };
 
-var LanguageLoadCount = 0;
+var LanguageLoadCount = 1;
+UsableLanguages.set('JSON', LanguageJSON);
 const xhr = new XMLHttpRequest();
 xhr.addEventListener('load', function(data) {
     if (xhr.readyState === 4) {
