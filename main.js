@@ -29,7 +29,7 @@ import { FileServiceLocal, FileServiceGitHub, FileServiceHYBFTS } from './module
 import * as LanguageJSON from './modules/languages/json.js';
 
 //固定
-const UsableFonts = Object.freeze(['sans-serif', 'serif', 'fantasy', 'system-ui']);
+const UsableFonts = Object.freeze(['sans-serif', 'serif', 'fantasy', 'system-ui', 'monospace']);
 const UsableFileType = Object.freeze(['JSON', 'text', 'JavaScript', 'HTML', 'CSV',  'CSS']);
 
 //時々、変更
@@ -554,6 +554,8 @@ function manualIndent() {
     var text = document.getElementById('input').innerText;
     if(UsableLanguages.has(FileInfo.type)) {
         text = UsableLanguages.get(FileInfo.type).indent(text);
+    } else {
+        System.notice.add('このファイルタイプはサポートされていません。');
     }
     document.getElementById('input').innerText = text;
     change();

@@ -57,6 +57,13 @@ body{
     background: none;
     padding: 5px;
 }
+.menu_list_item {
+    border: none;
+    border-radius: 0;
+    border-top: solid 0.5px #888;
+    background: none;
+    padding: 5px;
+}
 .menu_files {
     display: flex;
     justify-content: end;
