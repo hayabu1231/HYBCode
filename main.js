@@ -30,7 +30,7 @@ import * as LanguageJSON from './modules/languages/json.js';
 
 //固定
 const UsableFonts = Object.freeze(['sans-serif', 'serif', 'fantasy', 'system-ui', 'monospace']);
-const UsableFileType = Object.freeze(['text', 'JavaScript', 'HTML', 'CSV',  'CSS', 'JSON']);
+const UsableFileType = Object.freeze(['text', 'JavaScript', 'HTML', 'CSV', 'CSS', 'JSON']);
 
 //時々、変更
 const UsableLanguages = new Map();
@@ -45,7 +45,7 @@ const FileInfo = {
 };
 const System = {
     status: 'loading',
-    version: [0,0,0,'alpha'],
+    version: [0, 0, 0, 'alpha'],
     settings: {
         fontFamily: 'system-ui',
         keyCheck: true,
@@ -55,26 +55,26 @@ const System = {
         background: '#222',
         indent: '    ',
         connections: new Map(),
-        change: function(type, value){
+        change: function (type, value) {
             if (type == 'fontFamily' || type == 'color' || type == 'background') {
                 document.body.style.setProperty(`--main-${type}`, value);
             }
             System.settings[type] = value;
         }
     },
-    update: function() {
+    update: function () {
     },
     notice: {
-        add: function(message) {
+        add: function (message) {
             var notice = document.createElement('div');
             notice.className = 'notice';
             notice.innerText = message;
             document.getElementById('notice').append(notice);
-            setTimeout(function() {
+            setTimeout(function () {
                 System.notice.remove();
             }, 3000);
         },
-        remove: function(id) {
+        remove: function (id) {
             if (id) {
                 document.getElementById(id).remove();
             } else {
@@ -86,7 +86,7 @@ const System = {
 
 var LanguageLoadCount = 0;
 const xhr = new XMLHttpRequest();
-xhr.addEventListener('load', function(data) {
+xhr.addEventListener('load', function (data) {
     if (xhr.readyState === 4) {
         if (xhr.status === 200) {
             var data = JSON.parse(xhr.responseText);
@@ -98,6 +98,7 @@ xhr.addEventListener('load', function(data) {
                 xhr.send();
             } else {
                 UsableLanguages.set('application/json', LanguageJSON);
+                textColorChange();
             }
         }
     }
@@ -120,25 +121,25 @@ function createFileBlock(type, id, name, date, data, service) {
     var icon = document.createElement('img');
     icon.src = `img/${type}.svg`;
     if (type == 'host') {
-        block.addEventListener('click', function() {
+        block.addEventListener('click', function () {
             selectFilesService(this.dataset.id);
         });
     } else if (type == 'files') {
-        block.addEventListener('click', function() {
+        block.addEventListener('click', function () {
             document.getElementById('import').click();
         });
     } else if (type == 'repo') {
-        block.addEventListener('click', function() {
+        block.addEventListener('click', function () {
             System.settings.connections.get(this.dataset.type).getAll(null, this.dataset.id);
             selectFilesService(this.dataset.type, this.dataset.id + '/contents/');
         });
     } else if (type == 'folder') {
-        block.addEventListener('click', function() {
+        block.addEventListener('click', function () {
             System.settings.connections.get(this.dataset.type).getAll(this.dataset.id);
             selectFilesService(this.dataset.type, this.dataset.id);
         });
     } else {
-        block.addEventListener('click', function() {
+        block.addEventListener('click', function () {
             let files = System.settings.connections.get(this.dataset.type).files;
             for (let i = 0; i < files.length; i++) {
                 if (files[i].id == this.dataset.id) {
@@ -179,7 +180,7 @@ function connectionsGetAll() {
     var dbConnection = System.settings.db.transaction('connections', 'readwrite');
     var connectionsDB = dbConnection.objectStore('connections');
     var request = connectionsDB.getAll();
-    request.onsuccess = function(event) {
+    request.onsuccess = function (event) {
         for (let i = 0; i < event.target.result.length; i++) {
             addFilesServices(event.target.result[i].type, event.target.result[i])
         }
@@ -207,7 +208,7 @@ function addFilesServices(type, data) {
 function showFilesServices(id) {
     let services = [];
     let connections = [];
-    System.settings.connections.forEach(function(service) {
+    System.settings.connections.forEach(function (service) {
         var service_element = createFileBlock('host', service.id, service.name);
         if (id && id == service.id) {
             service_element.dataset.selected = 'true';
@@ -220,7 +221,7 @@ function showFilesServices(id) {
             service_element.dataset.selected = 'true';
         }
         service_element.dataset.type = service.id;
-        service_element.addEventListener('click', function() {
+        service_element.addEventListener('click', function () {
             alert(this.dataset.type);
         });
         var service_icon = document.createElement('img');
@@ -307,7 +308,7 @@ function selectFilesService(name, path) {
 
 //ファイル管理用DB（OPFSが使えるようになったら更新しようね）
 var dbRequest = window.indexedDB.open('HYBCode');
-dbRequest.onupgradeneeded = function(event) {
+dbRequest.onupgradeneeded = function (event) {
     System.settings.db = event.target.result;
     /*バージョン上げないとかも
     if (!System.settings.db.objectStoreNames.contains('connections')) {
@@ -315,16 +316,16 @@ dbRequest.onupgradeneeded = function(event) {
     }
     */
     if (!System.settings.db.objectStoreNames.contains('files')) {
-        System.settings.db.createObjectStore('files', {keyPath: 'id',autoIncrement: true});
+        System.settings.db.createObjectStore('files', { keyPath: 'id', autoIncrement: true });
     }
 };
-dbRequest.onsuccess = function(event) {
+dbRequest.onsuccess = function (event) {
     System.settings.db = event.target.result;
     addFilesServices('local');
 };
 
 const File = {
-    create: function() {
+    create: function () {
         File.open({
             name: '新規書類',
             type: 'text/text',
@@ -332,7 +333,7 @@ const File = {
             service: 'cache'
         });
     },
-    save: function() {
+    save: function () {
         var data = {
             name: FileInfo.name,
             type: FileInfo.type,
@@ -342,7 +343,7 @@ const File = {
         };
         if (FileInfo.id) {
             data.id = FileInfo.id;
-            EditingFiles.forEach(function(EditingFile) {
+            EditingFiles.forEach(function (EditingFile) {
                 if (EditingFile.id == FileInfo.id && EditingFile.repo) {
                     data.repo = EditingFile.repo
                 }
@@ -358,14 +359,14 @@ const File = {
             FileInfo.id = id;
         });
     },
-    open: function(data) {
+    open: function (data) {
         FileInfo.id = data.id;
         FileInfo.name = data.name;
         FileInfo.type = data.type;
         if (!FileInfo.type) {
             FileInfo.type = 'text/example';
-            UsableLanguages.forEach(function(language) {
-                if (language.extension == data.name.split('.').at(-1)){
+            UsableLanguages.forEach(function (language) {
+                if (language.extension == data.name.split('.').at(-1)) {
                     FileInfo.type = language.type;
                 }
             });
@@ -377,7 +378,7 @@ const File = {
             EditingFiles.set(`${data.id}@${data.type}@${data.service}@${data.name}`, data);
         }
         var files = [];
-        EditingFiles.forEach(function(EditingFile) {
+        EditingFiles.forEach(function (EditingFile) {
             var file = document.createElement('div');
             file.className = 'menu_files-file';
             if (EditingFiles.has(`${EditingFile.id}@${EditingFile.type}@${EditingFile.service}@${EditingFile.name}`)) {
@@ -387,7 +388,7 @@ const File = {
             file_name.className = 'menu_files-file-name';
             file_name.innerText = EditingFile.name;
             file_name.dataset.id = `${EditingFile.id}@${EditingFile.type}@${EditingFile.service}@${EditingFile.name}`;
-            file_name.addEventListener('click', function() {
+            file_name.addEventListener('click', function () {
                 File.open(EditingFiles.get(`${EditingFile.id}@${EditingFile.type}@${EditingFile.service}@${EditingFile.name}`));
             });
             file.append(file_name);
@@ -396,15 +397,15 @@ const File = {
             file_button.className = 'menu_files-file-close';
             file_button.src = 'img/close.svg';
             file_button.dataset.id = `${EditingFile.id}@${EditingFile.type}@${EditingFile.service}@${EditingFile.name}`;
-            file_button.addEventListener('click', function() {
+            file_button.addEventListener('click', function () {
                 File.close(EditingFiles.get(`${EditingFile.id}@${EditingFile.type}@${EditingFile.service}@${EditingFile.name}`));
             });
             file.append(file_button);
             files.push(file);
         });
         document.getElementById('menu-files').replaceChildren(...files);
-     },
-    close: function(data) {
+    },
+    close: function (data) {
         if (EditingFiles.has(`${data.id}@${data.type}@${data.service}@${data.name}`)) {
             EditingFiles.delete(`${data.id}@${data.type}@${data.service}@${data.name}`);
         }
@@ -420,9 +421,9 @@ const File = {
             change();
             document.getElementById('menu-files').replaceChildren();
         }
-     },
-    download: function() {
-        var blob = new Blob([document.getElementById('input').innerText],{type:FileInfo.type});
+    },
+    download: function () {
+        var blob = new Blob([document.getElementById('input').innerText], { type: FileInfo.type });
         document.getElementById('screen-Export-icon').dataset.type = FileInfo.type;
         document.getElementById('screen-Export-icon').dataset.data = document.getElementById('input').innerText;
         document.getElementById('screen-Export-preview').src = URL.createObjectURL(blob);
@@ -431,13 +432,13 @@ const File = {
         document.getElementById('screen-Export-download').setAttribute('download', FileInfo.name);
         screenOpen('Export');
     },
-    upload: function() {
+    upload: function () {
         var files = document.getElementById('import').files;
         for (let i = 0; i < files.length; i++) {
             let file = files[i];
             FileInfo.id = null;
             var reader = new FileReader();
-            reader.onload = ()=> {
+            reader.onload = () => {
                 File.open({
                     type: FileInfo.type,
                     name: file.name,
@@ -451,7 +452,7 @@ const File = {
 
 function calcDataSize(data, size) {
     if (!size) {
-        var size = encodeURIComponent(data).replace(/%../g,"x").length;
+        var size = encodeURIComponent(data).replace(/%../g, "x").length;
     }
     if (size > 1000000000) {
         size = `${Math.floor(((size / 1000) / 1000) / 100) / 10}GB`;
@@ -476,7 +477,7 @@ function change() {
         EditingFile.data = document.getElementById('input').innerText;
         EditingFiles.set(`${FileInfo.id}@${FileInfo.type}@${FileInfo.service}@${FileInfo.name}`, EditingFile);
     }
-    if(System.settings.autoSave){
+    if (System.settings.autoSave) {
         localStorage.setItem('fileData', document.getElementById('input').innerText);
         localStorage.setItem('fileId', FileInfo.id);
         localStorage.setItem('fileName', FileInfo.name);
@@ -485,32 +486,32 @@ function change() {
     }
     textColorChange();
     document.getElementById('side').innerHTML = '';
-    for(var i = 1; i <= document.getElementById('input').innerHTML.split('<br>').length; i++){
+    for (var i = 1; i <= document.getElementById('input').innerHTML.split('<br>').length; i++) {
         document.getElementById('side').innerHTML += i + '<br>';
     }
 }
-function quotesCheck(text){
+function quotesCheck(text) {
     var result = '';
     var mode = 'none';//none,text,colored,escape
-    for (var i = 0; i < text.length; i++){
-        if (mode == 'none'){
-            if (text.charAt(i) == '"'){
+    for (var i = 0; i < text.length; i++) {
+        if (mode == 'none') {
+            if (text.charAt(i) == '"') {
                 result += '<span_class="red">';
                 mode = '"';
-                } else if (text.charAt(i) == "'"){
+            } else if (text.charAt(i) == "'") {
                 result += '<span_class="red">';
                 mode = "'";
             }
             result += text.charAt(i);
-            } else if (mode == '"'){
+        } else if (mode == '"') {
             result += text.charAt(i);
-            if (text.charAt(i) == '"'){
+            if (text.charAt(i) == '"') {
                 result += '</span>';
                 mode = 'none';
             }
-            } else if (mode == "'"){
+        } else if (mode == "'") {
             result += text.charAt(i);
-            if (text.charAt(i) == "'"){
+            if (text.charAt(i) == "'") {
                 result += '</span>';
                 mode = 'none';
             }
@@ -531,29 +532,29 @@ function textColorChange() {
         text = text.replaceAll(HTMLReplaceWords[i][0], HTMLReplaceWords[i][1]);
     }
     var list = [];
-    var regList = [' |^',' |^'];
-    if(UsableLanguages.has(FileInfo.type)){
+    var regList = [' |^', ' |^'];
+    if (UsableLanguages.has(FileInfo.type)) {
         text = UsableLanguages.get(FileInfo.type).parse(text);
-        } else {
+    } else {
         text = quotesCheck(text);
-        for(var i = 0; i < list.length; i++){
+        for (var i = 0; i < list.length; i++) {
             var reg = '(' + regList[0] + ')(' + list[i][0] + ')(' + regList[1] + ')';
-            reg = new RegExp(reg,'g');
-            text = text.replaceAll(reg,'$1<span_class="' + list[i][1] + '">$2</span>$3');
+            reg = new RegExp(reg, 'g');
+            text = text.replaceAll(reg, '$1<span_class="' + list[i][1] + '">$2</span>$3');
         }
         text = text.replaceAll('    ', '    <span_class="indent"></span>');
         text = text.replaceAll(' ', ' ');//<svg height="14" width="4.49"><circle cx="2.3" cy="10" r="1" fill="#888"/></svg>
-        text = text.replaceAll('<span_class="indent">','<span class="indent">');
-        text = text.replaceAll('<span_class="green">','<span class="green">');
-        text = text.replaceAll('<span_class="blue">','<span class="blue">');
-        text = text.replaceAll('<span_class="red">','<span class="red">');
-        text = text.replaceAll('<span_class="yellow">','<span class="yellow">');
+        text = text.replaceAll('<span_class="indent">', '<span class="indent">');
+        text = text.replaceAll('<span_class="green">', '<span class="green">');
+        text = text.replaceAll('<span_class="blue">', '<span class="blue">');
+        text = text.replaceAll('<span_class="red">', '<span class="red">');
+        text = text.replaceAll('<span_class="yellow">', '<span class="yellow">');
     }
     document.getElementById('editor').innerHTML = text;
 }
 function manualIndent() {
     var text = document.getElementById('input').innerText;
-    if(UsableLanguages.has(FileInfo.type)) {
+    if (UsableLanguages.has(FileInfo.type)) {
         text = UsableLanguages.get(FileInfo.type).indent(text);
     } else {
         System.notice.add('このファイルタイプはサポートされていません。');
@@ -562,14 +563,14 @@ function manualIndent() {
     change();
 }
 
-function screenOpen(type){
+function screenOpen(type) {
     var content = '<button class="close_btn" onclick="screenClose()">×</button><h1 class="center">' + type + '</h1>';
     if (type == 'Preview') {
         document.getElementById('screen-Preview-frame').href = '';
     } else if (type == 'Detail') {
         document.getElementById('screen-Detail-name').value = FileInfo.name;
         var select = [];
-        UsableLanguages.forEach(function(language) {
+        UsableLanguages.forEach(function (language) {
             let option = document.createElement('option');
             if (language.type == FileInfo.type) {
                 option.selected = true;
@@ -581,7 +582,7 @@ function screenOpen(type){
         document.getElementById('screen-Detail-type').replaceChildren(...select);
     } else if (type == 'Files') {
         showFilesServices();
-    } else if (type == 'Settings'){
+    } else if (type == 'Settings') {
         var select = [];
         for (let i = 0; i < UsableFonts.length; i++) {
             let option = document.createElement('option');
@@ -601,7 +602,7 @@ function screenOpen(type){
             document.getElementById('screen-Settings-storage').innerText = `${calcDataSize(null, estimate.usage)}/${calcDataSize(null, estimate.quota)}(${Math.floor(percent)}%)`;
             document.getElementById('screen-Settings-storage').style.background = `linear-gradient(to right, #0fa ${percent}%, #888 ${percent}%)`;
         });
-    } else if(type == 'Connections'){
+    } else if (type == 'Connections') {
         showFilesServices();
     }
     if (document.getElementById('screen-' + type) && document.getElementById('screen-' + type).dataset.modal == 'false') {
@@ -617,7 +618,7 @@ function screenOpen(type){
 function storageSize() {
     return calcDataSize(localStorage.getItem('fileId') + localStorage.getItem('fileName') + localStorage.getItem('fileType') + localStorage.getItem('fileService') + localStorage.getItem('fileData'));
 }
-function storageClear(element){
+function storageClear(element) {
     localStorage.clear();
     element.innerText = `保存済みデータ削除(${storageSize()})`;
 }
@@ -625,16 +626,16 @@ function filesDBclear() {
     var dbConnection = System.settings.db.transaction('files', 'readwrite');
     var filesDB = dbConnection.objectStore('files');
     var request = filesDB.clear();
-    request.onsuccess = function(event) {
+    request.onsuccess = function (event) {
         System.notice.add('削除しました');
         System.settings.connections.get('local').getAll();
     };
 }
-function originalSwitch(element){
-    if(element.dataset.check == "true"){
+function originalSwitch(element) {
+    if (element.dataset.check == "true") {
         element.dataset.check = "false";
         System.settings.autoSave = false;
-        } else if(element.dataset.check == "false"){
+    } else if (element.dataset.check == "false") {
         element.dataset.check = "true";
         System.settings.autoSave = true;
         localStorage.setItem('fileData', document.getElementById('input').innerText);
@@ -647,11 +648,11 @@ function originalSwitch(element){
 function screenClose(type) {
     if (document.getElementById('screen-' + type)) {
         document.getElementById('screen-' + type).close();
-        } else {
+    } else {
         document.getElementById('screen').close();
     }
     System.settings.keyCheck = true;
-    if(System.settings.autoSave){
+    if (System.settings.autoSave) {
         localStorage.setItem('fileData', document.getElementById('input').innerText);
         localStorage.setItem('fileId', FileInfo.id);
         localStorage.setItem('fileName', FileInfo.name);
@@ -665,51 +666,51 @@ const OnclickData = [
     ['btn-saveEditingFile', File.save],
     ['btn-fileExport', File.download],
     ['btn-manualIndent', manualIndent],
-    ['screen-Connections-github-send', function() {
-        addFilesServices('github', {token: document.getElementById('screen-Connections-github-token').value});
+    ['screen-Connections-github-send', function () {
+        addFilesServices('github', { token: document.getElementById('screen-Connections-github-token').value });
         screenClose('NewConnectionsGitHub');
         screenClose('NewConnections');
     }],
-    ['screen-Connections-FTS-send', function() {
-        addFilesServices('hybfts', {address: `${document.getElementById('screen-Connections-FTS-address').value}:${document.getElementById('screen-Connections-FTS-port').value}`, user: {id: document.getElementById('screen-Connections-FTS-user').value, password: document.getElementById('screen-Connections-FTS-password').value}});
+    ['screen-Connections-FTS-send', function () {
+        addFilesServices('hybfts', { address: `${document.getElementById('screen-Connections-FTS-address').value}:${document.getElementById('screen-Connections-FTS-port').value}`, user: { id: document.getElementById('screen-Connections-FTS-user').value, password: document.getElementById('screen-Connections-FTS-password').value } });
         screenClose('NewConnectionsHyb');
         screenClose('NewConnections');
     }],
-    ['screen-Settings-autoSave', function() {
-         originalSwitch(this);
+    ['screen-Settings-autoSave', function () {
+        originalSwitch(this);
     }],
-    ['screen-Settings-deleteSave', function() {
-         storageClear(this);
+    ['screen-Settings-deleteSave', function () {
+        storageClear(this);
     }],
-    ['screen-Settings-deleteLocal', function() {
-         filesDBclear();
+    ['screen-Settings-deleteLocal', function () {
+        filesDBclear();
     }],
     ['screen-About-update', System.update]
 ];
 const OnchangeData = [
     ['input', change],
     ['import', File.upload],
-    ['screen-Settings-font', function() {
-         System.settings.change('fontFamily', this.value);
+    ['screen-Settings-font', function () {
+        System.settings.change('fontFamily', this.value);
     }],
-    ['screen-Settings-background', function() {
-         System.settings.change('background', this.value);
+    ['screen-Settings-background', function () {
+        System.settings.change('background', this.value);
     }],
-    ['screen-Settings-color', function() {
-         System.settings.change('color', this.value);
+    ['screen-Settings-color', function () {
+        System.settings.change('color', this.value);
     }],
-    ['screen-Detail-name', function() {
-         FileInfo.name = this.value;
+    ['screen-Detail-name', function () {
+        FileInfo.name = this.value;
     }],
-    ['screen-Detail-type', function() {
-         FileInfo.type = this.value;
-         change();
+    ['screen-Detail-type', function () {
+        FileInfo.type = this.value;
+        change();
     }]
 ];
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('keyup', change);
     setInterval(() => {
-        if(System.settings.keyCheck) {
+        if (System.settings.keyCheck) {
             var selection = document.getSelection();
             if (selection.rangeCount > 0) {
                 let nowTextFirst = selection.getRangeAt(0).getBoundingClientRect();
@@ -740,31 +741,31 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     var elements = document.getElementsByClassName('btn-open_screen');
     for (var i = 0; i < elements.length; i++) {
-        elements[i].addEventListener("click", function(event) {
+        elements[i].addEventListener("click", function (event) {
             screenOpen(this.dataset.name);
         });
     }
     var elements = document.getElementsByClassName('btn-screen_close');
     for (var i = 0; i < elements.length; i++) {
-        elements[i].addEventListener("click", function(event) {
+        elements[i].addEventListener("click", function (event) {
             screenClose(this.dataset.name);
         });
     }
     var elements = document.getElementsByClassName('screen');
     for (var i = 0; i < elements.length; i++) {
-        elements[i].addEventListener("click", function(event) {
+        elements[i].addEventListener("click", function (event) {
             var rect = this.getBoundingClientRect();
             if (
-            event.clientX < rect.x ||
-            event.clientY < rect.y ||
-            event.clientX > (rect.x + rect.width) ||
-            event.clientY > (rect.y + rect.height)
+                event.clientX < rect.x ||
+                event.clientY < rect.y ||
+                event.clientX > (rect.x + rect.width) ||
+                event.clientY > (rect.y + rect.height)
             ) {
                 screenClose(this.dataset.type);
             }
         });
     }
-    document.getElementById('screen-Export-icon').addEventListener('dragstart', function(event) {
+    document.getElementById('screen-Export-icon').addEventListener('dragstart', function (event) {
         event.dataTransfer.dropEffect = "copy";
         //var blob = new Blob([document.getElementById('input').innerText],{type:FileInfo.type});
         event.dataTransfer.setData(FileInfo.type, document.getElementById('input').innerText);
